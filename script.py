@@ -103,8 +103,7 @@ def run():
   customtkinter.set_default_color_theme("blue")
 
   app = application()
-  #https://www.youtube.com/shorts/IQDA39A44AA
-  #https://www.youtube.com/shorts/3ZEMvvDFEdA
+
   #Run
   app.mainloop()
 
