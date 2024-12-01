@@ -8,6 +8,7 @@ class application(customtkinter.CTk):
     self.width = 500
     self.height = 350
     self.geometry(f"{self.width}x{self.height}")
+    self.title("Youtube downloader")
 
     self.url = ""
     self.yt = None
