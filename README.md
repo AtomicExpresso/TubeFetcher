@@ -1,7 +1,7 @@
 ## TubeFetcher
-A Python application with a gui that downloads YouTube videos and playlists
+This is a Python-based application with a graphical user interface (GUI) that allows users to download YouTube videos and playlists.
 
-Note: This repository is for educational purposes only. I am not responsible for any misuse.
+Note: This repository is for educational purposes only. The author is not responsible for any misuse of this software.
 
 ![Screenshot 2024-12-01 112349](https://github.com/user-attachments/assets/a95628be-025c-48f4-9192-f15815c9862f)
 
@@ -30,3 +30,6 @@ Make sure you have Python installed on your system. The required libraries can b
 ## tech stack
 - Customtkinter
 - pytube
+
+## Licence
+This repo is licencsed under the MIT [license](https://github.com/AtomicExpresso/TubeFetcher?tab=MIT-1-ov-file)
