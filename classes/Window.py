@@ -40,6 +40,14 @@ class SettingsWindow(Window):
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.dl_options],
       command=self.parent.set_dl_option_clbck)
+    #Resoultion options menu, inherits from config
+    self.res_opt = ctk.CTkOptionMenu(
+      self.settings_frame, 
+      fg_color=f"{Config.secondary_color}", 
+      button_color=f"{Config.btn_color}", 
+      button_hover_color=f"{Config.btn_color_hover}", 
+      values=[*Config.res_options],
+      command=self.parent.set_dl_option_clbck)
     #Closes menu
     self.closeBtn = ctk.CTkButton(
       self.settings_frame, 
@@ -64,9 +72,10 @@ class SettingsWindow(Window):
     self.defLbl.grid(row=1, column=0, columnspan=3, padx=(10, 0), pady=(20, 0), sticky="w")
 
     self.resLbl.grid(row=2, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.res_opt.grid(row=2, column=1, padx=(10, 10), pady=(10, 10), sticky="w")
 
     self.dowLbl.grid(row=3, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
-    self.opt.grid(row=3, column=1, padx=(10, 10), pady=(0, 0), sticky="w")
+    self.opt.grid(row=3, column=1, padx=(10, 10), pady=(10, 10), sticky="w")
 
     self.closeBtn.grid(row=4, column=0, columnspan=3, padx=(10, 10), pady=(10, 10), sticky="s")
 

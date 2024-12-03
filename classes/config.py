@@ -10,8 +10,10 @@ class Config:
 
   #Options
   dl_options:list[str] = ["Video + audio", "Audio", "Playlist"]
+  res_options:list[str] = ["Best", "1080p", "360p"]
 
   #Current settings
   dl_cur_option:str = dl_options[0]
+  res_cur_option:str = res_options[0]
 
   folder_path:str = "./downloads" #downloaded vids go here

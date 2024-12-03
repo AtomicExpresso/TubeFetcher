@@ -99,8 +99,12 @@ class AppCmd:
 
   #set download option
   def set_download_option(self, txt):
-    Config.dl_cur_option = txt
-    self.set_settings_values()
+    if txt in Config.dl_options:
+      Config.dl_cur_option = txt
+      self.set_settings_values()
+    elif txt in Config.res_options:
+      Config.res_cur_option = txt
+      self.set_settings_values()
 
   #Sets app widgets to the values in config
   def set_settings_values(self):
@@ -109,6 +113,7 @@ class AppCmd:
     #Apply config values to settings if setting window exists
     if self.settings_window and self.settings_window.winfo_exists():
       self.settings_window.opt.set(Config.dl_cur_option)
+      self.settings_window.res_opt.set(Config.res_cur_option)
 
   #Runs on download button click
   def download_btn(self):
@@ -123,7 +128,11 @@ class AppCmd:
           on_progress_callback=self.set_progress, 
           on_complete_callback=self.set_complete)
 
-        self.app.yt.streams.get_highest_resolution().download(f"{self.app.folder_path}")
+        #Download at desired resoultion
+        if Config.res_cur_option == "Best":
+          self.app.yt.streams.get_highest_resolution().download(f"{self.app.folder_path}")
+        else:
+          self.app.yt.streams.get_highest_resolution().download(f"{self.app.folder_path}")
       elif self.app.options.get() == 'Playlist':
         self.app.yt = Playlist(
           self.app.url, 
