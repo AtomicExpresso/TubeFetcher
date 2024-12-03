@@ -4,7 +4,6 @@ from classes.cmd import AppCmd
 """
 todo:
 -Add ability to download audio only
--Finish settings menu
 -Add save system
 -Add info button for videos
 -Finish video thumbnail, title, size and percentage downloaded to main content
