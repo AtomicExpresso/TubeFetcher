@@ -1,5 +1,5 @@
-## Youtube video downloader
-A Python application with a gui that leverages the pytube and customtkinter libraries to download YouTube videos.
+## TubeFetcher
+A Python application with a gui that downloads YouTube videos and playlists
 
 Note: This repository is for educational purposes only. I am not responsible for any misuse.
 
@@ -8,7 +8,7 @@ Note: This repository is for educational purposes only. I am not responsible for
 
 ## Usage
 the application allows you to download both videos and playlist. All you need is the video or playlist url. 
-all downloads will get added to a "videos" folder in the projects directory.
+All downloads will appear at your specified folder path, if none is provided, then the app will put downloaded videos in a folder at its directory
 
 ## Requirements
 Make sure you have Python installed on your system. The required libraries can be installed using the requirements.txt file.
