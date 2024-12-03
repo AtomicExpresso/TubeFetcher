@@ -15,7 +15,7 @@ Make sure you have Python installed on your system. The required libraries can b
 
 1. download the repo
 ```bash
-  git clone https://github.com/AtomicExpresso/yt-video-downloader.git
+  git clone https://github.com/AtomicExpresso/TubeFetcher.git
   cd script
 ```
 2. Install the required libraries (if you havent already):
