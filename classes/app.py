@@ -1,3 +1,4 @@
+from sys import maxsize
 from tkinter.font import BOLD
 import customtkinter as ctk
 from PIL import Image
@@ -6,7 +7,7 @@ from requests import get
 from classes.config import Config
 
 class Application(ctk.CTk):
-  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, set_dl_clbck):
+  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, set_dl_clbck, set_dl_single_clbck):
     super().__init__()
     self.width = 500
     self.height = 350
@@ -19,6 +20,7 @@ class Application(ctk.CTk):
     self.add_video_clbck = add_vid_clbck
     self.st_clbck = st_clbck
     self.set_dl_option_clbck = set_dl_clbck
+    self.set_dl_single_clbck = set_dl_single_clbck
 
     self.url = ""
     self.yt = None
@@ -38,13 +40,18 @@ class Application(ctk.CTk):
       fg_color=f"{Config.primary_color}", 
       corner_radius=0)
     #Frame for main content
-    self.main_frame = ctk.CTkFrame(
+    self.main_frame = ctk.CTkScrollableFrame(
       self, 
       corner_radius=0, 
-      fg_color="#363636")
+      fg_color="#363636",
+      scrollbar_button_color=f"{Config.primary_color}",
+      scrollbar_button_hover_color=f"{Config.secondary_color}")
     #Frame for progress bar
     self.progress_frame = ctk.CTkFrame(
-      self, 
+      self,
+      bg_color=f"{Config.primary_color}",
+      fg_color="transparent",
+      height=30, 
       corner_radius=0)
     #Frame for bottom row
     self.bottom_frame = ctk.CTkFrame(
@@ -148,9 +155,9 @@ class Application(ctk.CTk):
   #Configures grid positions
   def grid_config(self):
     #configure grid
-    self.grid_columnconfigure(0, weight=1)
+    self.grid_columnconfigure(0, weight=0)
     self.grid_columnconfigure(1, weight=1)
-    self.grid_columnconfigure(2, weight=1)
+    self.grid_columnconfigure(2, weight=0)
     
     self.grid_rowconfigure(0, weight=0)
     self.grid_rowconfigure(1, weight=1)
@@ -165,6 +172,9 @@ class Application(ctk.CTk):
     self.main_frame.grid_columnconfigure(0, weight=0)
     self.main_frame.grid_columnconfigure(1, weight=1)
     self.main_frame.grid_columnconfigure(2, weight=1)
+
+    self.progress_frame.grid_rowconfigure(0, weight=0)
+    self.progress_frame.grid_rowconfigure(1, weight=0)
 
     self.progress_frame.grid_columnconfigure(0, weight=0)
     self.progress_frame.grid_columnconfigure(1, weight=1)
@@ -182,39 +192,78 @@ class Application(ctk.CTk):
     img_data = response.content
 
     vid_thumbnail_img = Image.open(BytesIO(img_data))
-    self.vid_thumbnail = ctk.CTkImage(light_image=vid_thumbnail_img, size=(80,80))
+    self.vid_thumbnail = ctk.CTkImage(light_image=vid_thumbnail_img, size=(150,120))
 
     #Create video widgets
+    #--main vid frame
     self.vid_frame = ctk.CTkFrame(
-      self.main_frame, 
+      self.main_frame,
+      fg_color=f"{Config.primary_color}")
+    #--thumbnail frame
+    self.vid_tn_frame = ctk.CTkFrame(
+      self.vid_frame, 
+      fg_color=f"{Config.primary_color}")
+    #--content frame
+    self.vid_ct_frame = ctk.CTkFrame(
+      self.vid_frame, 
       fg_color=f"{Config.primary_color}")
     #create labels
     self.vid_title_lbl = ctk.CTkLabel(
-      self.vid_frame, 
+      self.vid_ct_frame, 
       text=f"{self.vid_info["title"]}", 
       font=('ariel', 13, BOLD))
     self.vid_thumbnail_lbl = ctk.CTkLabel(
-      self.vid_frame, 
+      self.vid_tn_frame, 
       text="", 
       image=self.vid_thumbnail)
     self.vid_duriation_lbl = ctk.CTkLabel(
-      self.vid_frame, 
-      text=f"{self.vid_info["duriation"]}")
+      self.vid_ct_frame, 
+      text=f"Duriation: {self.vid_info["duriation"]}")
+    self.vid_size_lbl = ctk.CTkLabel(
+      self.vid_ct_frame, 
+      text=f"Size: {self.vid_info["duriation"]}")
+    #Create options
+    self.vid_dl_option = ctk.CTkOptionMenu(
+      self.vid_ct_frame, 
+      fg_color=f"{Config.secondary_color}", 
+      button_color=f"{Config.btn_color}", 
+      button_hover_color=f"{Config.btn_color_hover}", 
+      values=[*Config.dl_options], 
+      command=self.set_dl_single_clbck(len(self.vid_queue)))
+    self.vid_res_option = ctk.CTkOptionMenu(
+      self.vid_ct_frame, 
+      fg_color=f"{Config.secondary_color}", 
+      button_color=f"{Config.btn_color}", 
+      button_hover_color=f"{Config.btn_color_hover}", 
+      values=[*Config.res_options], 
+      command=self.set_dl_single_clbck(len(self.vid_queue)))
 
+    #Set vid values to the ones selected
+    self.vid_dl_option.set(Config.dl_cur_option)
+    self.vid_res_option.set(Config.res_cur_option)
     #Configure the grid
     def config_vid_grid():
       #Cols
       self.vid_frame.grid_columnconfigure(0, weight=0)
       self.vid_frame.grid_columnconfigure(1, weight=0)
       #Rows
-      self.vid_frame.grid_rowconfigure(0, weight=0)
+      self.vid_ct_frame.grid_rowconfigure(0, weight=0)
+      self.vid_ct_frame.grid_rowconfigure(1, weight=0)
+      self.vid_ct_frame.grid_rowconfigure(2, weight=0)
 
     #Append widgets to grid
     def append_vid_widget():
-      self.vid_frame.grid(row=1, column=0, columnspan=3, padx=20, pady=20, sticky="nsew")
-      self.vid_thumbnail_lbl.grid(column=0, row=0, pady=10, padx=(20, 10), sticky="nsw")
-      self.vid_title_lbl.grid(column=1, row=0, pady=10, padx=(20, 10), sticky="en")
-      self.vid_duriation_lbl.grid(column=1, row=2, pady=10, padx=(20, 10), sticky="w")
+      self.vid_tn_frame.grid(column=0, row=0, padx=10, pady=10, sticky="n")
+      self.vid_ct_frame.grid(column=1, row=0, padx=10, pady=10, sticky="n")
+      self.vid_frame.grid(row=[len(self.vid_queue)+1], column=0, columnspan=3, padx=20, pady=5, sticky="nsew")
+      self.vid_thumbnail_lbl.grid(column=0, row=1, pady=0, padx=(20, 10), sticky="w")
+      self.vid_title_lbl.grid(column=0, row=0, columnspan=2, pady=(10, 10), padx=(20, 10), sticky="w")
+
+      self.vid_dl_option.grid(column=0, row=1, padx=(10, 0), sticky="w")
+      self.vid_res_option.grid(column=1, row=1, padx=(10, 10), sticky="w")
+
+      self.vid_duriation_lbl.grid(column=0, row=2, pady=(10, 10), padx=(10, 0), sticky="w")
+      self.vid_size_lbl.grid(column=1, row=2, pady=(10,10), padx=(10, 10), sticky="w")
 
     config_vid_grid()
     append_vid_widget()
@@ -222,7 +271,7 @@ class Application(ctk.CTk):
   #Appends widgets to frames
   def append_widgets(self):
     #frames
-    self.top_frame.grid(row=0, column=0, columnspan=3, sticky="nsew")
+    self.top_frame.grid(row=0, column=0, columnspan=3, sticky="sew")
     self.main_frame.grid(row=1, column=0, columnspan=3, sticky="nsew")
     self.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
     self.bottom_frame.grid(row=3, column=0, columnspan=3, sticky="nsew")
@@ -237,3 +286,4 @@ class Application(ctk.CTk):
     self.trash_btn.grid(column=2, row=0, pady=10, padx=(0, 10), sticky="e")
     self.download_button.grid(column=3,row=0, padx=(0, 20), pady=(10,10), sticky="e")
     self.options.grid(column=1,row=0, padx=10, pady=(10,10), sticky="w")
+    

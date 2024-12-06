@@ -24,7 +24,7 @@ class SettingsWindow(Window):
 
     self.defLbl = ctk.CTkLabel(
       self.settings_frame, 
-      text="Default", 
+      text="General", 
       font=('ariel', 20, BOLD))
     self.resLbl = ctk.CTkLabel(
       self.settings_frame, 

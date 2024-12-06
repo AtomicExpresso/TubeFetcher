@@ -12,12 +12,13 @@ class AppCmd:
       folder_path_clbck=self.select_folder, 
       add_vid_clbck=self.add_video,
       st_clbck=self.open_settings_window,
-      set_dl_clbck=self.set_download_option)
+      set_dl_clbck=self.set_download_option,
+      set_dl_single_clbck=self.set_download_option)
     
     self.settings_window = None
 
   #For adding videos to main frame
-  def add_video(self):
+  def add_video(self)->None:
     try:
       self.app.url = self.app.input.get()
       self.app.yt = YouTube(
@@ -26,13 +27,21 @@ class AppCmd:
         on_complete_callback=self.set_complete)
       
       #Fetch video info
-      thumbnail = self.app.yt.thumbnail_url
-      title = self.app.yt.title
-      desc = self.app.yt.description
-      duriation = self.app.yt.length
-      author = self.app.yt.author
+      thumbnail:str = self.app.yt.thumbnail_url
+      title:str = self.app.yt.title
+      desc:str = self.app.yt.description
+      duriation:str|int = self.app.yt.length
+      author:str = self.app.yt.author
 
-      self.app.vid_info = {"thumbnail": thumbnail, "title":title, "desc":desc, "duriation": duriation, "author":author, "url": self.app.url}
+      self.app.vid_info = {
+        "thumbnail": thumbnail, 
+        "title":title, 
+        "desc":desc, 
+        "duriation": duriation, 
+        "author":author, 
+        "url": self.app.url,
+        "res_opt": Config.res_cur_option,
+        "dl_opt": Config.dl_cur_option}
       self.app.vid_queue.append(self.app.vid_info) #Add video to queue
 
       self.app.append_vid_info()
@@ -42,7 +51,7 @@ class AppCmd:
       raise ValueError("Invalid url")
 
   #For specifying download path
-  def select_folder(self):
+  def select_folder(self)->None:
     #open folder dialog
     try:
       folder_selected = ctk.filedialog.askdirectory(title="Select a Folder")
@@ -56,17 +65,17 @@ class AppCmd:
       raise ValueError("Unable to change file path, did you give the app permissions?")
 
   #open the settings window
-  def open_settings_window(self):
+  def open_settings_window(self)->None:
     self.settings_window = SettingsWindow(self.app)
     self.settings_window.grab_set()
     self.set_settings_values()
 
   #Set progress bar progress
-  def set_progress(self, stream, chunk, bytes_remaining):
-    total_size = stream.filesize
-    bytes_downloaded = total_size - bytes_remaining
-    percentage_left = bytes_downloaded / total_size * 100
-    progess_per = int(percentage_left)
+  def set_progress(self, stream, chunk, bytes_remaining)->None:
+    total_size:str|int = stream.filesize
+    bytes_downloaded:str|int = total_size - bytes_remaining
+    percentage_left:str|int = bytes_downloaded / total_size * 100
+    progess_per:int = int(percentage_left)
 
     #update progress text
     self.app.download_progress_txt.configure(text=f"{progess_per}%")
@@ -77,12 +86,12 @@ class AppCmd:
     self.app.download_progress_bar.update()
 
   #Runs after video has been completed
-  def set_complete(self,stream, chunk):
+  def set_complete(self,stream, chunk)->None:
     #update progress text
     self.app.download_progress_txt.configure(text=f"Complete!",text_color="green")
 
   #destroy text and feilds
-  def destory_fields(self):
+  def destory_fields(self)->None:
     self.app.header.destroy()
     self.app.download_progress_txt.destroy()
     self.app.error_txt.destroy()
@@ -92,22 +101,29 @@ class AppCmd:
     self.app.yt = None
 
   #reset feilds
-  def reset_feilds(self):
+  def reset_feilds(self)->None:
     self.app.download_progress_txt.configure(text="", text_color="white")
     self.app.error_txt.configure(text="")
     self.app.download_progress_bar.set(0)
 
   #set download option
-  def set_download_option(self, txt):
+  def set_download_option(self, txt)->None:
     if txt in Config.dl_options:
       Config.dl_cur_option = txt
       self.set_settings_values()
     elif txt in Config.res_options:
       Config.res_cur_option = txt
       self.set_settings_values()
+  
+  #Set single video download option
+  def set_single_download_option(self, txt, i)->None:
+    if txt in Config.dl_options:
+      self.app.vid_info[i]["dl_opt"] = txt
+    elif txt in Config.res_options:
+      self.app.vid_info[i]["res_opt"] = txt
 
   #Sets app widgets to the values in config
-  def set_settings_values(self):
+  def set_settings_values(self)->None:
     self.app.options.set(Config.dl_cur_option)
 
     #Apply config values to settings if setting window exists
@@ -116,7 +132,7 @@ class AppCmd:
       self.settings_window.res_opt.set(Config.res_cur_option)
 
   #Runs on download button click
-  def download_btn(self):
+  def download_btn(self)->None:
     self.reset_feilds()
     try:
       self.app.url = self.app.input.get()
@@ -144,6 +160,7 @@ class AppCmd:
           ys.download("./videos")
       
       #Append progress content to frame
+      self.app.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
       self.app.download_progress_txt.grid(row=0, column=0, pady=(120, 0), padx=(20, 0))
       self.app.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
       self.app.error_txt.configure(text="")
@@ -151,5 +168,5 @@ class AppCmd:
       self.app.error_txt.configure(text="Invalid URL")
       self.app.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
 
-  def run(self):
+  def run(self)->None:
     self.app.mainloop()
