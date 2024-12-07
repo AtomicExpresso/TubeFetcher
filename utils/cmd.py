@@ -1,7 +1,6 @@
-from multiprocessing import Value
 from tkinter import messagebox
 import customtkinter as ctk
-from pytubefix import YouTube, Playlist
+from pytubefix import YouTube
 from utils.application import Application
 from utils.Window import SettingsWindow
 from utils.config import Config
@@ -23,6 +22,7 @@ class AppCmd:
   #For adding videos to main frame
   def add_video(self)->None:
     if self.app.is_downloading:
+      self.create_dialog_notfication("Cant add new videos because a download is in progress")
       pass
     else:
       try:
@@ -111,6 +111,7 @@ class AppCmd:
   #Clears videos from main frame
   def clear_main_frame(self)->None:
     if self.app.is_downloading:
+      self.create_dialog_notfication("Cant clear frame because a download is in progress")
       pass
     else:
       try:
@@ -166,6 +167,7 @@ class AppCmd:
   #Set single video download option
   def set_single_download_option(self, txt, i)->None:
     if self.app.is_downloading:
+      self.create_dialog_notfication("Cant change options because a download is in progress")
       pass
     else:
       cur = self.app.vid_queue[i]
@@ -204,10 +206,15 @@ class AppCmd:
 
     self.app.widgets.error_txt.configure(text=f"{msg}")
     self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(10, 0), padx=(0, 0))
+  
+  #used for warnings
+  def create_dialog_notfication(self, msg:str)->None:
+    messagebox.showinfo("Notification", f"{msg}")
 
   #Runs on download button click
   def download_btn(self)->None:
     if self.app.is_downloading:
+      self.create_dialog_notfication("Unable to download because a download is already in progress")
       pass
     else:
     #Check if progress frame is missing

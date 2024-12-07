@@ -5,7 +5,7 @@ from utils.cmd import AppCmd
 todo:
 -Add save system for settings
 -Add info button for videos
--Finish video thumbnail, title, size and percentage downloaded to main content
+-Add individual progress bars to each video frame when downloading
 """
 
 #Run application
