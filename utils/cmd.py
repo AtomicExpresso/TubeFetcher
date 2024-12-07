@@ -194,9 +194,14 @@ class AppCmd:
         else:
           cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
       
+      #If progress frame is missing or destoryed, re-create it
+      if not self.app.frames.progress_frame:
+        self.app.frames.create_progress_frame()
+        self.app.widgets.create_progress_widgets()
+
       #Append progress content to frame
       self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
-      self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(120, 0), padx=(20, 0))
+      self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
       self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
       self.app.widgets.error_txt.configure(text="")
     except:
