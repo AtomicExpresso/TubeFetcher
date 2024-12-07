@@ -21,10 +21,12 @@ class Application(ctk.CTk):
     self.set_dl_single_clbck = set_dl_single_clbck #Sets resoultion and download type for a single video
     self.clear_mf_clbck = clear_mf_clbck #Clear main frame
 
-    self.url = ""
-    self.yt = None
+    self.url = "" #url from input
+    self.yt = None #pytube libary instance
     self.vid_info = None #is a dict of video info
     self.vid_queue = [] #list for video queue
+
+    self.is_downloading:bool = False #used for preventing the user for changing res or dl options while a download is in progress
 
     self.frames = AppFrames(parent=self)
     self.widgets = AppWidgets(parent=self)

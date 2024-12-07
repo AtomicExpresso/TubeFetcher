@@ -1,3 +1,4 @@
+from multiprocessing import Value
 from tkinter import messagebox
 import customtkinter as ctk
 from pytubefix import YouTube, Playlist
@@ -21,47 +22,50 @@ class AppCmd:
 
   #For adding videos to main frame
   def add_video(self)->None:
-    try:
-      self.app.url = self.app.widgets.input.get()
-      self.app.yt = YouTube(
-        self.app.url, 
-        on_progress_callback=self.set_progress, 
-        on_complete_callback=self.set_complete)
-      
-      #Fetch video info
-      thumbnail:str = self.app.yt.thumbnail_url
-      title:str = self.app.yt.title
-      desc:str = self.app.yt.description
-      duriation:str|int = self.app.yt.length
-      author:str = self.app.yt.author
-      res_opt:str = Config.res_cur_option
-      dl_opt:str = Config.dl_cur_option
-      size:str|int = "Pending" #file size
-      stream = None #download stream
-      index:int = len(self.app.vid_queue)
+    if self.app.is_downloading:
+      pass
+    else:
+      try:
+        self.app.url = self.app.widgets.input.get()
+        self.app.yt = YouTube(
+          self.app.url, 
+          on_progress_callback=self.set_progress, 
+          on_complete_callback=self.set_complete)
+        
+        #Fetch video info
+        thumbnail:str = self.app.yt.thumbnail_url
+        title:str = self.app.yt.title
+        desc:str = self.app.yt.description
+        duriation:str|int = self.app.yt.length
+        author:str = self.app.yt.author
+        res_opt:str = Config.res_cur_option
+        dl_opt:str = Config.dl_cur_option
+        size:str|int = "Pending" #file size
+        stream = None #download stream
+        index:int = len(self.app.vid_queue)
 
-      self.app.vid_info = {
-        "thumbnail": thumbnail, 
-        "title":title, 
-        "desc":desc, 
-        "duriation": duriation, 
-        "author":author, 
-        "url": self.app.url,
-        "res_opt": res_opt,
-        "dl_opt": dl_opt,
-        "size": size,
-        "stream": stream,
-        "index": index}
-      self.app.vid_queue.append(self.app.vid_info) #Add video to queue
+        self.app.vid_info = {
+          "thumbnail": thumbnail, 
+          "title":title, 
+          "desc":desc, 
+          "duriation": duriation, 
+          "author":author, 
+          "url": self.app.url,
+          "res_opt": res_opt,
+          "dl_opt": dl_opt,
+          "size": size,
+          "stream": stream,
+          "index": index}
+        self.app.vid_queue.append(self.app.vid_info) #Add video to queue
 
-      self.check_vid_resoultion(index)
-      self.app.vid_frame.append_vid_info()
-      
-      #reset progress bar
-      self.destroy_progress_frame()
-    except:
-      self.throw_progress_error(msg="Invalid URL")
-      raise ValueError("Invalid url")
+        self.check_vid_resoultion(index)
+        self.app.vid_frame.append_vid_info()
+        
+        #reset progress bar
+        self.destroy_progress_frame()
+      except:
+        self.throw_progress_error(msg="Invalid URL")
+        raise ValueError("Invalid url")
 
   #For specifying download path
   def select_folder(self)->None:
@@ -102,21 +106,25 @@ class AppCmd:
   def set_complete(self,stream, chunk)->None:
     #update progress text
     self.app.widgets.download_progress_txt.configure(text=f"Complete!",text_color="green")
+    self.app.is_downloading = False
 
   #Clears videos from main frame
   def clear_main_frame(self)->None:
-    try:
-      self.destroy_progress_frame()
-      self.check_progress_frame()
+    if self.app.is_downloading:
+      pass
+    else:
+      try:
+        self.destroy_progress_frame()
+        self.check_progress_frame()
 
-      self.app.vid_info = {}
-      self.app.vid_queue = []
+        self.app.vid_info = {}
+        self.app.vid_queue = []
 
-      self.app.frames.create_main_frame()
-      self.app.app_append.append_widgets()
-      self.app.app_append.grid_config()
-    except:
-      raise ValueError("An error occured while clearing widgets")
+        self.app.frames.create_main_frame()
+        self.app.app_append.append_widgets()
+        self.app.app_append.grid_config()
+      except:
+        raise ValueError("An error occured while clearing widgets")
 
   #reset feilds
   def reset_feilds(self)->None:
@@ -152,17 +160,21 @@ class AppCmd:
 
       cur["size"] = Utils.calculate_file_size(cur)
     except:
+      self.app.is_downloading = False
       raise ValueError("An error occured while fetching video stream, is your internet connected?")
 
   #Set single video download option
   def set_single_download_option(self, txt, i)->None:
-    cur = self.app.vid_queue[i]
-    if txt in Config.dl_options:
-      cur["dl_opt"] = txt
-      cur["size"] = Utils.calculate_file_size(cur)
-    elif txt in Config.res_options:
-      cur["res_opt"] = txt
-    self.check_vid_resoultion(i)
+    if self.app.is_downloading:
+      pass
+    else:
+      cur = self.app.vid_queue[i]
+      if txt in Config.dl_options:
+        cur["dl_opt"] = txt
+        cur["size"] = Utils.calculate_file_size(cur)
+      elif txt in Config.res_options:
+        cur["res_opt"] = txt
+      self.check_vid_resoultion(i)
 
   #Sets app widgets to the values in config
   def set_settings_values(self)->None:
@@ -175,8 +187,9 @@ class AppCmd:
 
   #used for deleting progress frame
   def destroy_progress_frame(self)->None:
-    if self.app.frames.progress_frame.winfo_exists():
+    if self.app.frames.progress_frame.winfo_exists() and not self.app.is_downloading:
       self.app.frames.progress_frame.destroy()
+      self.app.is_downloading = False
   #used for recreating progress frame
   def check_progress_frame(self)->None:
     if not self.app.frames.progress_frame.winfo_exists():
@@ -194,40 +207,45 @@ class AppCmd:
 
   #Runs on download button click
   def download_btn(self)->None:
+    if self.app.is_downloading:
+      pass
+    else:
     #Check if progress frame is missing
-    self.check_progress_frame()
-    self.reset_feilds()
-    
-    try:
-      #loop over video queue
-      for video in self.app.vid_queue:
-        cur_vid_yt = YouTube(
-          video["url"], 
-          on_progress_callback=self.set_progress, 
-          on_complete_callback=self.set_complete)
-        cur_stream = cur_vid_yt.streams
-        cur_filter = None
-        
-        #apply filters
-        if video["dl_opt"] == "Video + Audio":
-          cur_filter = cur_stream.filter(
-            res=f"{video["res_opt"]}").get_highest_resolution()
-        elif video["dl_opt"] == "Audio":
-          cur_filter = cur_stream.get_audio_only()
-        
-        #check if desired resoultion is possible, if not find the best possible resoultion
-        if cur_filter:
-          cur_filter.download(f"{Config.folder_path}")
-        else:
-          cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
+      self.check_progress_frame()
+      self.reset_feilds()
 
-      #Append progress content to frame
-      self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
-      self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
-      self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
-      self.app.widgets.error_txt.configure(text="")
-    except:
-      self.throw_progress_error(msg="Invalid URL")
+      try:
+        self.app.is_downloading = True
+        #loop over video queue
+        for video in self.app.vid_queue:
+          cur_vid_yt = YouTube(
+            video["url"], 
+            on_progress_callback=self.set_progress, 
+            on_complete_callback=self.set_complete)
+          cur_stream = cur_vid_yt.streams
+          cur_filter = None
+          
+          #apply filters
+          if video["dl_opt"] == "Video + Audio":
+            cur_filter = cur_stream.filter(
+              res=f"{video["res_opt"]}").get_highest_resolution()
+          elif video["dl_opt"] == "Audio":
+            cur_filter = cur_stream.get_audio_only()
+          
+          #check if desired resoultion is possible, if not find the best possible resoultion
+          if cur_filter:
+            cur_filter.download(f"{Config.folder_path}")
+          else:
+            cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
+
+        #Append progress content to frame
+        self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
+        self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
+        self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
+        self.app.widgets.error_txt.configure(text="")
+      except:
+        self.app.is_downloading = False
+        self.throw_progress_error(msg="Invalid URL")
 
   def run(self)->None:
     self.app.mainloop()
