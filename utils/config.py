@@ -8,6 +8,8 @@ class Config:
   btn_color_download:str = f"#4ea94b"
   progress_color:str = f"#4ea94b"
 
+  error_txt_color:str = f"#eb4034"
+
   #Options
   dl_options:list[str] = ["Video + Audio", "Audio"]
   res_options:list[str] = ["1080p", "720p", "360p"]

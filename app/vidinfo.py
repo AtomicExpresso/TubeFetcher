@@ -13,7 +13,7 @@ class VidInfo:
     self.info = None
 
   #Configure the grid
-  def config_vid_grid(self):
+  def config_vid_grid(self)->None:
     #Cols
     self.vid_frame.grid_columnconfigure(0, weight=0)
     self.vid_frame.grid_columnconfigure(1, weight=0)
@@ -22,7 +22,7 @@ class VidInfo:
     self.vid_ct_frame.grid_rowconfigure(1, weight=0)
     self.vid_ct_frame.grid_rowconfigure(2, weight=0)
 
-  def append_vid_widget(self):
+  def append_vid_widget(self)->None:
     #Append widgets to grid
     self.vid_tn_frame.grid(column=0, row=0, padx=10, pady=10, sticky="n")
     self.vid_ct_frame.grid(column=1, row=0, padx=10, pady=10, sticky="n")
@@ -37,7 +37,7 @@ class VidInfo:
     self.vid_size_lbl.grid(column=1, row=2, pady=(10,10), padx=(10, 10), sticky="w")
 
   #Create video widgets
-  def create_vid_widgets(self):
+  def create_vid_widgets(self)->None:
     #--main vid frame
     self.vid_frame = ctk.CTkFrame(
       self.parent.frames.main_frame,

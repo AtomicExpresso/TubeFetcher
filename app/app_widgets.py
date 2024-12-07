@@ -28,7 +28,7 @@ class AppWidgets:
       font=("ariel", 20))
     self.error_txt = ctk.CTkLabel(
       self.parent.frames.progress_frame, 
-      text_color="red", 
+      text_color=f"{Config.error_txt_color}", 
       text="Error", 
       fg_color="transparent", 
       font=("ariel", 20))
@@ -53,7 +53,7 @@ class AppWidgets:
       self.parent.frames.top_frame, 
       image=self.plusImg, 
       fg_color=f"{Config.secondary_color}", 
-      hover_color="#363535", 
+      hover_color=f"{Config.btn_color}", 
       text="", 
       bg_color="transparent", 
       corner_radius=0, 
@@ -89,7 +89,7 @@ class AppWidgets:
     self.folder_btn = ctk.CTkButton(
       self.parent.frames.bottom_frame, 
       fg_color=f"{Config.secondary_color}", 
-      hover_color="#363535", 
+      hover_color=f"{Config.btn_color}", 
       image=self.folderImg, 
       text="", 
       width=45, 
@@ -99,7 +99,7 @@ class AppWidgets:
       self.parent.frames.bottom_frame, 
       image=self.trashImg, 
       fg_color=f"{Config.secondary_color}", 
-      hover_color="#363535", 
+      hover_color=f"{Config.btn_color}", 
       text="", 
       width=45,
       command=self.parent.clear_mf_clbck)
