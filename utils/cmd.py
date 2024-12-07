@@ -58,8 +58,7 @@ class AppCmd:
       self.app.vid_frame.append_vid_info()
       
       #reset progress bar
-      if self.app.frames.progress_frame.winfo_exists():
-        self.destroy_progress_frame()
+      self.destroy_progress_frame()
     except:
       self.throw_progress_error(msg="Invalid URL")
       raise ValueError("Invalid url")
@@ -107,12 +106,15 @@ class AppCmd:
   #Clears videos from main frame
   def clear_main_frame(self)->None:
     try:
+      self.destroy_progress_frame()
+      self.check_progress_frame()
+
       self.app.vid_info = {}
       self.app.vid_queue = []
 
       self.app.frames.create_main_frame()
-      self.app.append_widgets()
-      self.app.grid_config()
+      self.app.app_append.append_widgets()
+      self.app.app_append.grid_config()
     except:
       raise ValueError("An error occured while clearing widgets")
 
@@ -180,7 +182,7 @@ class AppCmd:
     if not self.app.frames.progress_frame.winfo_exists():
       self.app.frames.create_progress_frame()
       self.app.widgets.create_progress_widgets()
-      self.app.append_progress_widgets()
+      self.app.app_append.append_progress_widgets()
       self.app.frames.grid_config()
   #throw error
   def throw_progress_error(self, msg:str)->None:
