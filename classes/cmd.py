@@ -1,7 +1,7 @@
 from tkinter import messagebox
 import customtkinter as ctk
 from pytubefix import YouTube, Playlist
-from classes.app import Application
+from classes.application import Application
 from classes.Window import SettingsWindow
 from classes.config import Config
 
@@ -54,7 +54,7 @@ class AppCmd:
       self.app.vid_queue.append(self.app.vid_info) #Add video to queue
 
       self.check_vid_resoultion(index)
-      self.app.append_vid_info()
+      self.app.vid_frame.append_vid_info()
     except:
       self.app.error_txt.configure(text="Invalid url")
       self.app.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
@@ -103,12 +103,10 @@ class AppCmd:
   #Clears videos from main frame
   def clear_main_frame(self)->None:
     try:
-      for widget in self.app.main_frame.winfo_children():
-        widget.destroy()
       self.app.vid_info = {}
       self.app.vid_queue = []
 
-      self.app.create_main_frame()
+      self.app.frames.create_main_frame()
       self.app.append_widgets()
       self.app.grid_config()
     except:
@@ -198,7 +196,7 @@ class AppCmd:
           ys.download("./videos")
       
       #Append progress content to frame
-      self.app.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
+      self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
       self.app.download_progress_txt.grid(row=0, column=0, pady=(120, 0), padx=(20, 0))
       self.app.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
       self.app.error_txt.configure(text="")
