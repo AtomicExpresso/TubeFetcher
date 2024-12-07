@@ -13,7 +13,8 @@ class AppCmd:
       add_vid_clbck=self.add_video,
       st_clbck=self.open_settings_window,
       set_dl_clbck=self.set_download_option,
-      set_dl_single_clbck=self.set_single_download_option)
+      set_dl_single_clbck=self.set_single_download_option,
+      clear_mf_clbck=self.clear_main_frame)
     
     self.settings_window = None
 
@@ -99,15 +100,19 @@ class AppCmd:
     #update progress text
     self.app.download_progress_txt.configure(text=f"Complete!",text_color="green")
 
-  #destroy text and feilds
-  def destory_fields(self)->None:
-    self.app.header.destroy()
-    self.app.download_progress_txt.destroy()
-    self.app.error_txt.destroy()
-    self.app.input.destroy()
-    self.app.download_button.destroy()
-    self.app.url = ""
-    self.app.yt = None
+  #Clears videos from main frame
+  def clear_main_frame(self)->None:
+    try:
+      for widget in self.app.main_frame.winfo_children():
+        widget.destroy()
+      self.app.vid_info = {}
+      self.app.vid_queue = []
+
+      self.app.create_main_frame()
+      self.app.append_widgets()
+      self.app.grid_config()
+    except:
+      raise ValueError("An error occured while clearing widgets")
 
   #reset feilds
   def reset_feilds(self)->None:

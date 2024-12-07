@@ -7,7 +7,7 @@ from classes.config import Config
 from classes.utils import Utils
 
 class Application(ctk.CTk):
-  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, set_dl_clbck, set_dl_single_clbck):
+  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, set_dl_clbck, set_dl_single_clbck, clear_mf_clbck):
     super().__init__()
     self.width = 500
     self.height = 350
@@ -15,12 +15,13 @@ class Application(ctk.CTk):
     self.title("TubeFetcher")
 
     #setup callback functions
-    self.download_btn_clbck = download_btn_clbck
-    self.folder_path_clbck = folder_path_clbck
-    self.add_video_clbck = add_vid_clbck
-    self.st_clbck = st_clbck
-    self.set_dl_option_clbck = set_dl_clbck
-    self.set_dl_single_clbck = set_dl_single_clbck
+    self.download_btn_clbck = download_btn_clbck #Downloads all videos in mainframe
+    self.folder_path_clbck = folder_path_clbck #Opens folder dialog
+    self.add_video_clbck = add_vid_clbck #Adds new videos to mainframe
+    self.st_clbck = st_clbck #open settings window
+    self.set_dl_option_clbck = set_dl_clbck #sets default resoultion and download type for all new videos
+    self.set_dl_single_clbck = set_dl_single_clbck #Sets resoultion and download type for a single video
+    self.clear_mf_clbck = clear_mf_clbck #Clear main frame
 
     self.url = ""
     self.yt = None
@@ -33,6 +34,15 @@ class Application(ctk.CTk):
     self.grid_config()
     self.append_widgets()
 
+  #re-creates mainframe
+  def create_main_frame(self):
+    self.main_frame = ctk.CTkScrollableFrame(
+      self, 
+      corner_radius=0, 
+      fg_color="#363636",
+      scrollbar_button_color=f"{Config.primary_color}",
+      scrollbar_button_hover_color=f"{Config.secondary_color}")
+
   def create_frames(self):
     #Frame for url input
     self.top_frame = ctk.CTkFrame(
@@ -40,12 +50,7 @@ class Application(ctk.CTk):
       fg_color=f"{Config.primary_color}", 
       corner_radius=0)
     #Frame for main content
-    self.main_frame = ctk.CTkScrollableFrame(
-      self, 
-      corner_radius=0, 
-      fg_color="#363636",
-      scrollbar_button_color=f"{Config.primary_color}",
-      scrollbar_button_hover_color=f"{Config.secondary_color}")
+    self.create_main_frame()
     #Frame for progress bar
     self.progress_frame = ctk.CTkFrame(
       self,
@@ -123,7 +128,8 @@ class Application(ctk.CTk):
       fg_color=f"{Config.secondary_color}", 
       hover_color="#363535", 
       text="", 
-      width=45)
+      width=45,
+      command=self.clear_mf_clbck)
     #Add videos to que button
     self.addvideo_btn = ctk.CTkButton(
       self.top_frame, 
@@ -292,4 +298,3 @@ class Application(ctk.CTk):
     self.trash_btn.grid(column=2, row=0, pady=10, padx=(0, 10), sticky="e")
     self.download_button.grid(column=3,row=0, padx=(0, 20), pady=(10,10), sticky="e")
     self.options.grid(column=1,row=0, padx=10, pady=(10,10), sticky="w")
-

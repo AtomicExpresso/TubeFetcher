@@ -8,7 +8,6 @@ todo:
 -Add info button for videos
 -Finish video thumbnail, title, size and percentage downloaded to main content
 -Add queue system to downloads
--Add delete button to clear main frame
 """
 
 #Run application
