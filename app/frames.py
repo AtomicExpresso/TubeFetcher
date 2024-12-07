@@ -1,4 +1,4 @@
-from classes.config import Config
+from utils.config import Config
 import customtkinter as ctk
 
 #Handles app frames

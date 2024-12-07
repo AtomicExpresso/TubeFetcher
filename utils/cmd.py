@@ -1,9 +1,9 @@
 from tkinter import messagebox
 import customtkinter as ctk
 from pytubefix import YouTube, Playlist
-from classes.application import Application
-from classes.Window import SettingsWindow
-from classes.config import Config
+from utils.application import Application
+from utils.Window import SettingsWindow
+from utils.config import Config
 
 class AppCmd:
   def __init__(self):
@@ -21,7 +21,7 @@ class AppCmd:
   #For adding videos to main frame
   def add_video(self)->None:
     try:
-      self.app.url = self.app.input.get()
+      self.app.url = self.app.widgets.input.get()
       self.app.yt = YouTube(
         self.app.url, 
         on_progress_callback=self.set_progress, 
@@ -56,8 +56,8 @@ class AppCmd:
       self.check_vid_resoultion(index)
       self.app.vid_frame.append_vid_info()
     except:
-      self.app.error_txt.configure(text="Invalid url")
-      self.app.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
+      self.app.widgets.error_txt.configure(text="Invalid url")
+      self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
       raise ValueError("Invalid url")
 
   #For specifying download path
@@ -70,8 +70,8 @@ class AppCmd:
         Config.folder_path = folder_selected
         messagebox.showinfo("File path updated", f"Download folder is now, {folder_selected}")
     except:
-      self.app.error_txt.configure(text="Incorrect file path")
-      self.app.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
+      self.app.widgets.error_txt.configure(text="Incorrect file path")
+      self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
       raise ValueError("Unable to change file path, did you give the app permissions?")
 
   #open the settings window
@@ -88,17 +88,17 @@ class AppCmd:
     progess_per:int = int(percentage_left)
 
     #update progress text
-    self.app.download_progress_txt.configure(text=f"{progess_per}%")
-    self.app.download_progress_txt.update()
+    self.app.widgets.download_progress_txt.configure(text=f"{progess_per}%")
+    self.app.widgets.download_progress_txt.update()
 
     #update progress bar
-    self.app.download_progress_bar.set(float(percentage_left)/100)
-    self.app.download_progress_bar.update()
+    self.app.widgets.download_progress_bar.set(float(percentage_left)/100)
+    self.app.widgets.download_progress_bar.update()
 
   #Runs after video has been completed
   def set_complete(self,stream, chunk)->None:
     #update progress text
-    self.app.download_progress_txt.configure(text=f"Complete!",text_color="green")
+    self.app.widgets.download_progress_txt.configure(text=f"Complete!",text_color="green")
 
   #Clears videos from main frame
   def clear_main_frame(self)->None:
@@ -114,9 +114,9 @@ class AppCmd:
 
   #reset feilds
   def reset_feilds(self)->None:
-    self.app.download_progress_txt.configure(text="", text_color="white")
-    self.app.error_txt.configure(text="")
-    self.app.download_progress_bar.set(0)
+    self.app.widgets.download_progress_txt.configure(text="", text_color="white")
+    self.app.widgets.error_txt.configure(text="")
+    self.app.widgets.download_progress_bar.set(0)
 
   #set download option
   def set_download_option(self, txt)->None:
@@ -160,7 +160,7 @@ class AppCmd:
 
   #Sets app widgets to the values in config
   def set_settings_values(self)->None:
-    self.app.options.set(Config.dl_cur_option)
+    self.app.widgets.options.set(Config.dl_cur_option)
 
     #Apply config values to settings if setting window exists
     if self.settings_window and self.settings_window.winfo_exists():
@@ -171,7 +171,7 @@ class AppCmd:
   def download_btn(self)->None:
     self.reset_feilds()
     try:
-      self.app.url = self.app.input.get()
+      self.app.url = self.app.widgets.input.get()
 
       #Check options for video + audio, audio or playlist
       if self.app.options.get() == 'Video':
@@ -197,12 +197,12 @@ class AppCmd:
       
       #Append progress content to frame
       self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
-      self.app.download_progress_txt.grid(row=0, column=0, pady=(120, 0), padx=(20, 0))
-      self.app.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
-      self.app.error_txt.configure(text="")
+      self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(120, 0), padx=(20, 0))
+      self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
+      self.app.widgets.error_txt.configure(text="")
     except:
-      self.app.error_txt.configure(text="Invalid URL")
-      self.app.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
+      self.app.widgets.error_txt.configure(text="Invalid URL")
+      self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
 
   def run(self)->None:
     self.app.mainloop()

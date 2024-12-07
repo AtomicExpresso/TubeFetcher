@@ -1,5 +1,5 @@
 import customtkinter
-from classes.cmd import AppCmd
+from utils.cmd import AppCmd
 
 """
 todo:

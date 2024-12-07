@@ -1,6 +1,6 @@
 from tkinter.font import BOLD
 import customtkinter as ctk
-from classes.config import Config
+from utils.config import Config
 
 #handles popups
 class Window(ctk.CTkToplevel):
