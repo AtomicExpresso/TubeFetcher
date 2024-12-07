@@ -61,8 +61,7 @@ class AppCmd:
       if self.app.frames.progress_frame.winfo_exists():
         self.destroy_progress_frame()
     except:
-      self.app.widgets.error_txt.configure(text="Invalid url")
-      self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
+      self.throw_progress_error(msg="Invalid URL")
       raise ValueError("Invalid url")
 
   #For specifying download path
@@ -173,20 +172,28 @@ class AppCmd:
       self.settings_window.res_opt.set(Config.res_cur_option)
 
   #used for deleting progress frame
-  def destroy_progress_frame(self):
+  def destroy_progress_frame(self)->None:
     if self.app.frames.progress_frame.winfo_exists():
       self.app.frames.progress_frame.destroy()
-
-  #Runs on download button click
-  def download_btn(self)->None:
-    #Check if progress frame is missing
+  #used for recreating progress frame
+  def check_progress_frame(self)->None:
     if not self.app.frames.progress_frame.winfo_exists():
-      print("hi")
       self.app.frames.create_progress_frame()
       self.app.widgets.create_progress_widgets()
       self.app.append_progress_widgets()
       self.app.frames.grid_config()
+  #throw error
+  def throw_progress_error(self, msg:str)->None:
+    self.destroy_progress_frame() #preventing duplicates
+    self.check_progress_frame()
 
+    self.app.widgets.error_txt.configure(text=f"{msg}")
+    self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(10, 0), padx=(0, 0))
+
+  #Runs on download button click
+  def download_btn(self)->None:
+    #Check if progress frame is missing
+    self.check_progress_frame()
     self.reset_feilds()
     
     try:
@@ -218,8 +225,7 @@ class AppCmd:
       self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
       self.app.widgets.error_txt.configure(text="")
     except:
-      self.app.widgets.error_txt.configure(text="Invalid URL")
-      self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
+      self.throw_progress_error(msg="Invalid URL")
 
   def run(self)->None:
     self.app.mainloop()

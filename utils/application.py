@@ -58,22 +58,27 @@ class Application(ctk.CTk):
   #append progress frame
   def append_progress_widgets(self):
     self.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
-
-  #Appends widgets to frames
-  def append_widgets(self):
-    #frames
+  #append top frame widgets
+  def append_top_widgets(self):
     self.frames.top_frame.grid(row=0, column=0, columnspan=3, sticky="sew")
-    self.frames.main_frame.grid(row=1, column=0, columnspan=3, sticky="nsew")
-    self.append_progress_widgets()
-    self.frames.bottom_frame.grid(row=3, column=0, columnspan=3, sticky="nsew")
-
-    #input row
     self.widgets.input.grid(column=0, columnspan=3, row=0, pady=10, padx=(20, 90), sticky="ew")
     self.widgets.addvideo_btn.grid(column=1, row=0, pady=10, padx=(0, 0), sticky="e")
     self.widgets.settings_btn.grid(column=2, row=0, pady=10, padx=(20, 20), sticky="e")
-
-    #bottom row
+  #append bottom frame widgets
+  def append_bottom_widgets(self):
+    self.frames.bottom_frame.grid(row=3, column=0, columnspan=3, sticky="nsew")
     self.widgets.folder_btn.grid(column=0, row=0, pady=10, padx=(20, 10), sticky="w")
     self.widgets.trash_btn.grid(column=2, row=0, pady=10, padx=(0, 10), sticky="e")
     self.widgets.download_button.grid(column=3,row=0, padx=(0, 20), pady=(10,10), sticky="e")
     self.widgets.options.grid(column=1,row=0, padx=10, pady=(10,10), sticky="w")
+  #append main frame widgets
+  def append_main_widgets(self):
+    self.frames.main_frame.grid(row=1, column=0, columnspan=3, sticky="nsew")
+
+  #Appends widgets to frames
+  def append_widgets(self):
+    #frames
+    self.append_top_widgets()
+    self.append_main_widgets()
+    self.append_progress_widgets()
+    self.append_bottom_widgets()
