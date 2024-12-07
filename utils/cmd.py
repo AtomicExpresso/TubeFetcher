@@ -56,6 +56,10 @@ class AppCmd:
 
       self.check_vid_resoultion(index)
       self.app.vid_frame.append_vid_info()
+      
+      #reset progress bar
+      if self.app.frames.progress_frame.winfo_exists():
+        self.destroy_progress_frame()
     except:
       self.app.widgets.error_txt.configure(text="Invalid url")
       self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
@@ -168,9 +172,23 @@ class AppCmd:
       self.settings_window.opt.set(Config.dl_cur_option)
       self.settings_window.res_opt.set(Config.res_cur_option)
 
+  #used for deleting progress frame
+  def destroy_progress_frame(self):
+    if self.app.frames.progress_frame.winfo_exists():
+      self.app.frames.progress_frame.destroy()
+
   #Runs on download button click
   def download_btn(self)->None:
+    #Check if progress frame is missing
+    if not self.app.frames.progress_frame.winfo_exists():
+      print("hi")
+      self.app.frames.create_progress_frame()
+      self.app.widgets.create_progress_widgets()
+      self.app.append_progress_widgets()
+      self.app.frames.grid_config()
+
     self.reset_feilds()
+    
     try:
       #loop over video queue
       for video in self.app.vid_queue:
@@ -193,11 +211,6 @@ class AppCmd:
           cur_filter.download(f"{Config.folder_path}")
         else:
           cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
-      
-      #If progress frame is missing or destoryed, re-create it
-      if not self.app.frames.progress_frame:
-        self.app.frames.create_progress_frame()
-        self.app.widgets.create_progress_widgets()
 
       #Append progress content to frame
       self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")

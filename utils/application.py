@@ -55,12 +55,16 @@ class Application(ctk.CTk):
     #confiigure frame grid
     self.frames.grid_config()
 
+  #append progress frame
+  def append_progress_widgets(self):
+    self.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
+
   #Appends widgets to frames
   def append_widgets(self):
     #frames
     self.frames.top_frame.grid(row=0, column=0, columnspan=3, sticky="sew")
     self.frames.main_frame.grid(row=1, column=0, columnspan=3, sticky="nsew")
-    self.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
+    self.append_progress_widgets()
     self.frames.bottom_frame.grid(row=3, column=0, columnspan=3, sticky="nsew")
 
     #input row
