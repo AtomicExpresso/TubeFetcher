@@ -4,6 +4,7 @@ from pytubefix import YouTube, Playlist
 from utils.application import Application
 from utils.Window import SettingsWindow
 from utils.config import Config
+from utils.utils import Utils
 
 class AppCmd:
   def __init__(self):
@@ -144,18 +145,18 @@ class AppCmd:
       else:
         cur["stream"] = cur_stream.get_highest_resolution()
 
-      #Change file size based on stream, division converts it from bytes to megabytes and rounds 2 decimal places
-      file_size = cur["stream"].filesize / 1048576
-      cur["size"] = f"{file_size:.2f} MB"
+      cur["size"] = Utils.calculate_file_size(cur)
     except:
       raise ValueError("An error occured while fetching video stream, is your internet connected?")
 
   #Set single video download option
   def set_single_download_option(self, txt, i)->None:
+    cur = self.app.vid_queue[i]
     if txt in Config.dl_options:
-      self.app.vid_queue[i]["dl_opt"] = txt
+      cur["dl_opt"] = txt
+      cur["size"] = Utils.calculate_file_size(cur)
     elif txt in Config.res_options:
-      self.app.vid_queue[i]["res_opt"] = txt
+      cur["res_opt"] = txt
     self.check_vid_resoultion(i)
 
   #Sets app widgets to the values in config
