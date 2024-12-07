@@ -207,6 +207,13 @@ class Application(ctk.CTk):
     self.vid_ct_frame = ctk.CTkFrame(
       self.vid_frame, 
       fg_color=f"{Config.primary_color}")
+    #Special case
+    #--Index, used for changeing a single video res and dl type
+    self.vid_index = ctk.CTkLabel(
+      self.vid_ct_frame, 
+      text=f"{self.vid_info["index"]}")
+    index = int(self.vid_index.cget("text"))
+
     #create labels
     self.vid_title_lbl = ctk.CTkLabel(
       self.vid_ct_frame, 
@@ -229,15 +236,14 @@ class Application(ctk.CTk):
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.dl_options], 
-      command=self.set_dl_single_clbck(len(self.vid_queue)-1))
+      command=lambda cur_val: self.set_dl_single_clbck(txt=cur_val, i=index))
     self.vid_res_option = ctk.CTkOptionMenu(
       self.vid_ct_frame, 
       fg_color=f"{Config.secondary_color}", 
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.res_options], 
-      command=self.set_dl_single_clbck(len(self.vid_queue)-1))
-
+      command=lambda cur_val:self.set_dl_single_clbck(txt=cur_val, i=index))    
     #Set vid values to the ones selected
     self.vid_dl_option.set(Config.dl_cur_option)
     self.vid_res_option.set(Config.res_cur_option)

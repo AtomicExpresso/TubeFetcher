@@ -13,7 +13,7 @@ class AppCmd:
       add_vid_clbck=self.add_video,
       st_clbck=self.open_settings_window,
       set_dl_clbck=self.set_download_option,
-      set_dl_single_clbck=self.set_download_option)
+      set_dl_single_clbck=self.set_single_download_option)
     
     self.settings_window = None
 
@@ -36,6 +36,7 @@ class AppCmd:
       dl_opt:str = Config.dl_cur_option
       size:str|int = "Pending" #file size
       stream = None #download stream
+      index:int = len(self.app.vid_queue)
 
       self.app.vid_info = {
         "thumbnail": thumbnail, 
@@ -47,10 +48,11 @@ class AppCmd:
         "res_opt": res_opt,
         "dl_opt": dl_opt,
         "size": size,
-        "stream": stream}
+        "stream": stream,
+        "index": index}
       self.app.vid_queue.append(self.app.vid_info) #Add video to queue
 
-      self.check_vid_resoultion(len(self.app.vid_queue)-1)
+      self.check_vid_resoultion(index)
       self.app.append_vid_info()
     except:
       self.app.error_txt.configure(text="Invalid url")
@@ -148,10 +150,10 @@ class AppCmd:
   #Set single video download option
   def set_single_download_option(self, txt, i)->None:
     if txt in Config.dl_options:
-      self.app.vid_info[i]["dl_opt"] = txt
+      self.app.vid_queue[i]["dl_opt"] = txt
     elif txt in Config.res_options:
-      self.app.vid_info[i]["res_opt"] = txt
-    self.check_vid_resoultion()
+      self.app.vid_queue[i]["res_opt"] = txt
+    self.check_vid_resoultion(i)
 
   #Sets app widgets to the values in config
   def set_settings_values(self)->None:

@@ -9,7 +9,7 @@ class Config:
   progress_color:str = f"#4ea94b"
 
   #Options
-  dl_options:list[str] = ["Video + audio", "Audio", "Playlist"]
+  dl_options:list[str] = ["Video + audio", "Audio"]
   res_options:list[str] = ["1080p", "720p", "360p"]
 
   #Current settings
