@@ -10,7 +10,7 @@ class Config:
 
   #Options
   dl_options:list[str] = ["Video + audio", "Audio", "Playlist"]
-  res_options:list[str] = ["Best", "1080p", "360p"]
+  res_options:list[str] = ["1080p", "720p", "360p"]
 
   #Current settings
   dl_cur_option:str = dl_options[0]

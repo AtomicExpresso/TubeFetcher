@@ -1,10 +1,10 @@
-from sys import maxsize
 from tkinter.font import BOLD
 import customtkinter as ctk
 from PIL import Image
 from io import BytesIO
 from requests import get
 from classes.config import Config
+from classes.utils import Utils
 
 class Application(ctk.CTk):
   def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, set_dl_clbck, set_dl_single_clbck):
@@ -218,10 +218,10 @@ class Application(ctk.CTk):
       image=self.vid_thumbnail)
     self.vid_duriation_lbl = ctk.CTkLabel(
       self.vid_ct_frame, 
-      text=f"Duriation: {self.vid_info["duriation"]}")
+      text=f"Duriation: {Utils.calculate_Time(self.vid_info["duriation"])}")
     self.vid_size_lbl = ctk.CTkLabel(
       self.vid_ct_frame, 
-      text=f"Size: {self.vid_info["duriation"]}")
+      text=f"Size: {self.vid_info["size"]}")
     #Create options
     self.vid_dl_option = ctk.CTkOptionMenu(
       self.vid_ct_frame, 
@@ -229,14 +229,14 @@ class Application(ctk.CTk):
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.dl_options], 
-      command=self.set_dl_single_clbck(len(self.vid_queue)))
+      command=self.set_dl_single_clbck(len(self.vid_queue)-1))
     self.vid_res_option = ctk.CTkOptionMenu(
       self.vid_ct_frame, 
       fg_color=f"{Config.secondary_color}", 
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.res_options], 
-      command=self.set_dl_single_clbck(len(self.vid_queue)))
+      command=self.set_dl_single_clbck(len(self.vid_queue)-1))
 
     #Set vid values to the ones selected
     self.vid_dl_option.set(Config.dl_cur_option)
@@ -286,4 +286,4 @@ class Application(ctk.CTk):
     self.trash_btn.grid(column=2, row=0, pady=10, padx=(0, 10), sticky="e")
     self.download_button.grid(column=3,row=0, padx=(0, 20), pady=(10,10), sticky="e")
     self.options.grid(column=1,row=0, padx=10, pady=(10,10), sticky="w")
-    
+

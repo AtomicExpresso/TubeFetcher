@@ -32,6 +32,10 @@ class AppCmd:
       desc:str = self.app.yt.description
       duriation:str|int = self.app.yt.length
       author:str = self.app.yt.author
+      res_opt:str = Config.res_cur_option
+      dl_opt:str = Config.dl_cur_option
+      size:str|int = "Pending" #file size
+      stream = None #download stream
 
       self.app.vid_info = {
         "thumbnail": thumbnail, 
@@ -40,10 +44,13 @@ class AppCmd:
         "duriation": duriation, 
         "author":author, 
         "url": self.app.url,
-        "res_opt": Config.res_cur_option,
-        "dl_opt": Config.dl_cur_option}
+        "res_opt": res_opt,
+        "dl_opt": dl_opt,
+        "size": size,
+        "stream": stream}
       self.app.vid_queue.append(self.app.vid_info) #Add video to queue
 
+      self.check_vid_resoultion(len(self.app.vid_queue)-1)
       self.app.append_vid_info()
     except:
       self.app.error_txt.configure(text="Invalid url")
@@ -115,12 +122,36 @@ class AppCmd:
       Config.res_cur_option = txt
       self.set_settings_values()
   
+  #Check resoultion
+  def check_vid_resoultion(self, i)->None:
+    try:
+      #Check if users perfered resoultion is possible, if not fall back to the highest resolution
+      cur = self.app.vid_queue[i]
+      cur_stream = YouTube(
+        cur["url"], 
+        on_progress_callback=self.set_progress, 
+        on_complete_callback=self.set_complete).streams
+      cur_filter = cur_stream.filter(
+        res=f"{Config.res_cur_option}").get_highest_resolution()
+
+      if cur_filter:
+        cur["stream"] = cur_filter
+      else:
+        cur["stream"] = cur_stream.get_highest_resolution()
+
+      #Change file size based on stream, division converts it from bytes to megabytes and rounds 2 decimal places
+      file_size = cur["stream"].filesize / 1048576
+      cur["size"] = f"{file_size:.2f} MB"
+    except:
+      raise ValueError("An error occured while fetching video stream, is your internet connected?")
+
   #Set single video download option
   def set_single_download_option(self, txt, i)->None:
     if txt in Config.dl_options:
       self.app.vid_info[i]["dl_opt"] = txt
     elif txt in Config.res_options:
       self.app.vid_info[i]["res_opt"] = txt
+    self.check_vid_resoultion()
 
   #Sets app widgets to the values in config
   def set_settings_values(self)->None:
