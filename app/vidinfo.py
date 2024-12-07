@@ -79,14 +79,14 @@ class VidInfo:
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.dl_options], 
-      command=lambda cur_val: self.set_dl_single_clbck(txt=cur_val, i=index))
+      command=lambda cur_val: self.parent.set_dl_single_clbck(txt=cur_val, i=index))
     self.vid_res_option = ctk.CTkOptionMenu(
       self.vid_ct_frame, 
       fg_color=f"{Config.secondary_color}", 
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.res_options], 
-      command=lambda cur_val:self.set_dl_single_clbck(txt=cur_val, i=index))
+      command=lambda cur_val:self.parent.set_dl_single_clbck(txt=cur_val, i=index))
     #Set vid values to the ones selected
     self.vid_dl_option.set(Config.dl_cur_option)
     self.vid_res_option.set(Config.res_cur_option) 

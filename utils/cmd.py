@@ -171,29 +171,27 @@ class AppCmd:
   def download_btn(self)->None:
     self.reset_feilds()
     try:
-      self.app.url = self.app.widgets.input.get()
-
-      #Check options for video + audio, audio or playlist
-      if self.app.options.get() == 'Video':
-        self.app.yt = YouTube(
-          self.app.url, 
+      #loop over video queue
+      for video in self.app.vid_queue:
+        cur_vid_yt = YouTube(
+          video["url"], 
           on_progress_callback=self.set_progress, 
           on_complete_callback=self.set_complete)
-
-        #Download at desired resoultion
-        if Config.res_cur_option == "Best":
-          self.app.yt.streams.get_highest_resolution().download(f"{self.app.folder_path}")
-        else:
-          self.app.yt.streams.get_highest_resolution().download(f"{self.app.folder_path}")
-      elif self.app.options.get() == 'Playlist':
-        self.app.yt = Playlist(
-          self.app.url, 
-          on_progress_callback=self.set_progress, 
-          on_complete_callback=self.set_complete)
+        cur_stream = cur_vid_yt.streams
+        cur_filter = None
         
-        for video in self.app.yt.videos:
-          ys = video.streams.get_highest_resolution()
-          ys.download("./videos")
+        #apply filters
+        if video["dl_opt"] == "Video + Audio":
+          cur_filter = cur_stream.filter(
+            res=f"{video["res_opt"]}").get_highest_resolution()
+        elif video["dl_opt"] == "Audio":
+          cur_filter = cur_stream.get_audio_only()
+        
+        #check if desired resoultion is possible, if not find the best possible resoultion
+        if cur_filter:
+          cur_filter.download(f"{Config.folder_path}")
+        else:
+          cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
       
       #Append progress content to frame
       self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")

@@ -3,11 +3,9 @@ from utils.cmd import AppCmd
 
 """
 todo:
--Add ability to download audio only
 -Add save system for settings
 -Add info button for videos
 -Finish video thumbnail, title, size and percentage downloaded to main content
--Add queue system to downloads
 """
 
 #Run application
