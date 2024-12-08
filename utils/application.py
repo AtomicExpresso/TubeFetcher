@@ -3,6 +3,7 @@ from app.vidinfo import VidInfo
 from app.frames import AppFrames
 from app.app_widgets import AppWidgets
 from app.app_append import AppAppend
+from utils.utils import Utils
 
 class Application(ctk.CTk):
   def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, set_dl_clbck, set_dl_single_clbck, clear_mf_clbck):
@@ -36,6 +37,8 @@ class Application(ctk.CTk):
     self.frames.create_frames()
     self.widgets.create_images()
     self.widgets.create_widgets()
+
+    Utils.load_settings_data()
 
     self.app_append.grid_config()
     self.app_append.append_widgets()

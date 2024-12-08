@@ -1,9 +1,9 @@
 import customtkinter
 from utils.cmd import AppCmd
+from utils.utils import Utils
 
 """
 todo:
--Add save system for settings
 -Add info button for videos
 -Add individual progress bars to each video frame when downloading
 """

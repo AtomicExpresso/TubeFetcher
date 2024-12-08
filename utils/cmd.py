@@ -141,7 +141,8 @@ class AppCmd:
     elif txt in Config.res_options:
       Config.res_cur_option = txt
       self.set_settings_values()
-  
+      
+    Utils.save_settings_data()
   #Check resoultion
   def check_vid_resoultion(self, i)->None:
     try:
