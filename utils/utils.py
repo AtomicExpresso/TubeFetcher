@@ -29,7 +29,7 @@ class Utils:
   #Save settings data
   def save_settings_data()->None:
     data = {
-      "resoultion": Config.res_cur_option,
+      "res_type": Config.res_cur_option,
       "dl_type": Config.dl_cur_option
     }
 
@@ -37,9 +37,15 @@ class Utils:
       json.dump(data, file)
 
   #Fetch save data
-  def load_settings_data()->None:
-    with open("./settings/settings.json", "r") as file:
-      data = json.load(file)
-    
-    Config.dl_cur_option = data['dl_type']
-    Config.res_cur_option = data['resoultion']
+  @classmethod
+  def load_settings_data(self)->None:
+    try:
+      with open("./settings/settings.json", "r") as file:
+        data = json.load(file)
+      
+      if data['dl_type'] in Config.dl_options:
+        Config.dl_cur_option = data['dl_type']
+      if data['res_type'] in Config.res_options:
+        Config.res_cur_option = data['res_type']
+    except:
+      self.save_settings_data()
