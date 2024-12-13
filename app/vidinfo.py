@@ -58,10 +58,8 @@ class VidInfo:
     index = int(self.vid_index.cget("text"))
 
     #create labels
-    self.vid_title_lbl = ctk.CTkLabel(
-      self.vid_ct_frame, 
-      text=f"{self.info["title"]}", 
-      font=('ariel', 13, BOLD))
+    self.shorten_txt_length()
+      
     self.vid_thumbnail_lbl = ctk.CTkLabel(
       self.vid_tn_frame, 
       text="", 
@@ -101,6 +99,19 @@ class VidInfo:
     vid_thumbnail_img = Image.open(BytesIO(img_data))
     self.vid_thumbnail = ctk.CTkImage(light_image=vid_thumbnail_img, size=(150,120))
 
+  def shorten_txt_length(self)->None:
+    #shorten video title if it suppasses 35 chars
+    if len(self.info['title']) < 35:
+      self.vid_title_lbl = ctk.CTkLabel(
+        self.vid_ct_frame, 
+        text=f"{self.info["title"]}", 
+        font=('ariel', 13, BOLD))
+    else:
+      self.vid_title_lbl = ctk.CTkLabel(
+        self.vid_ct_frame, 
+        text=f"{self.info["title"][:35]}...", 
+        font=('ariel', 13, BOLD))
+
   def update_vid_info(self, new_info: dict):
     #change specified fields
     for key, value in new_info.items():
@@ -109,7 +120,7 @@ class VidInfo:
     
     # Update the widgets
     if self.vid_title_lbl:
-      self.vid_title_lbl.configure(text=f"{self.info['title']}")
+      self.shorten_txt_length()
         
     if self.vid_size_lbl:
       self.vid_size_lbl.configure(text=f"Size: {self.info['size']}")
