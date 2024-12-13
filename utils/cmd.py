@@ -108,10 +108,12 @@ class AppCmd:
     self.app.widgets.download_progress_bar.set(float(percentage_left)/100)
     self.app.widgets.download_progress_bar.update()
 
-  #Runs after video has been completed
-  def set_complete(self,stream, chunk)->None:
+  #Runs after all videos has been completed
+  def set_complete(self)->None:
     #update progress text
     self.app.widgets.download_progress_txt.configure(text=f"Complete!",text_color="green")
+    self.app.widgets.download_progress_bar.set(100)
+    self.app.widgets.download_progress_bar.update()
     self.app.is_downloading = False
 
   #Clears videos from main frame
@@ -222,12 +224,12 @@ class AppCmd:
     messagebox.showinfo("Notification", f"{msg}")
 
   #update info
-  def update_single_video_info(self, i:int, new_info:dict):
+  def update_single_video_info(self, i:int, new_info:dict)->None:
     vid_info_instance = self.app.vid_frames[i]
     vid_info_instance.update_vid_info(new_info)
 
   #build progress bar for single video
-  def create_single_video_progress(self, i:int):
+  def create_single_video_progress(self, i:int)->None:
     vid_info_instance = self.app.vid_frames[i]
     vid_info_instance.dl_in_progress()
 
@@ -243,6 +245,17 @@ class AppCmd:
 
       try:
         self.app.is_downloading = True
+        #loop through video frames
+        for i in range(len(self.app.vid_frames)):
+          #build progress bar for single video
+          self.create_single_video_progress(i)
+
+        #bottom progress frame
+        self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
+        self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
+        self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
+        self.app.widgets.error_txt.configure(text="")
+
         #loop over video queue
         for i, video in enumerate(self.app.vid_queue):
           cur_vid_yt = YouTube(
@@ -251,9 +264,6 @@ class AppCmd:
             on_complete_callback=self.app.vid_frames[i].set_complete)
           cur_stream = cur_vid_yt.streams
           cur_filter = None
-
-          #build progress bar for single video
-          self.create_single_video_progress(i)
 
           #apply filters
           if video["dl_opt"] == "Video + Audio":
@@ -267,12 +277,9 @@ class AppCmd:
             cur_filter.download(f"{Config.folder_path}")
           else:
             cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
-      
-        #bottom progress frame
-        self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
-        self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
-        self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
-        self.app.widgets.error_txt.configure(text="")
+
+        #mark download queue as completed
+        self.set_complete()
       except:
         self.app.is_downloading = False
         self.throw_progress_error(msg="Invalid URL")

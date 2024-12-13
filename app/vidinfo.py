@@ -90,7 +90,7 @@ class VidInfo:
     self.vid_res_option.set(Config.res_cur_option)
 
   #fetch video image
-  def fetch_vid_thumbnail(self):
+  def fetch_vid_thumbnail(self)->None:
     # Download the image using requests
     image_url = self.info["thumbnail"]
     response = get(image_url)
@@ -112,7 +112,7 @@ class VidInfo:
         text=f"{self.info["title"][:35]}...", 
         font=('ariel', 13, BOLD))
 
-  def update_vid_info(self, new_info: dict):
+  def update_vid_info(self, new_info: dict)->None:
     #change specified fields
     for key, value in new_info.items():
       if key in self.info:
@@ -125,7 +125,7 @@ class VidInfo:
     if self.vid_size_lbl:
       self.vid_size_lbl.configure(text=f"Size: {self.info['size']}")
 
-  def dl_in_progress(self):
+  def dl_in_progress(self)->None:
     #destroy options to make room for progress bar
     self.vid_res_option.destroy()
     self.vid_dl_option.destroy()
@@ -144,6 +144,9 @@ class VidInfo:
         font=("ariel", 15))
     self.vid_dl_progress_txt.grid(column=0, row=1, padx=(10, 10), sticky="w")
     self.vid_dl_progress.grid(column=0, row=2, padx=(10, 0), columnspan=3, sticky="w")
+
+    self.vid_dl_progress.set(0)
+    self.vid_dl_progress.update()
 
     #Set progress bar progress
   def set_progress(self, stream, chunk, bytes_remaining)->None:
@@ -164,10 +167,11 @@ class VidInfo:
   def set_complete(self,stream, chunk)->None:
     #update progress text
     self.vid_dl_progress_txt.configure(text=f"Complete!",text_color="green")
-    self.parent.is_downloading = False
+    self.vid_dl_progress.set(100)
+    self.vid_dl_progress.update()
 
   #Adds video info to frame
-  def append_vid_info(self):
+  def append_vid_info(self)->None:
     self.info = self.parent.get_vid_info()
     self.fetch_vid_thumbnail()
     self.create_vid_widgets()
