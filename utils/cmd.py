@@ -226,6 +226,11 @@ class AppCmd:
     vid_info_instance = self.app.vid_frames[i]
     vid_info_instance.update_vid_info(new_info)
 
+  #build progress bar for single video
+  def create_single_video_progress(self, i:int):
+    vid_info_instance = self.app.vid_frames[i]
+    vid_info_instance.dl_in_progress()
+
   #Runs on download button click
   def download_btn(self)->None:
     if self.app.is_downloading:
@@ -242,11 +247,14 @@ class AppCmd:
         for i, video in enumerate(self.app.vid_queue):
           cur_vid_yt = YouTube(
             video["url"], 
-            on_progress_callback=self.set_progress, 
-            on_complete_callback=self.set_complete)
+            on_progress_callback=self.app.vid_frames[i].set_progress, 
+            on_complete_callback=self.app.vid_frames[i].set_complete)
           cur_stream = cur_vid_yt.streams
           cur_filter = None
-          
+
+          #build progress bar for single video
+          self.create_single_video_progress(i)
+
           #apply filters
           if video["dl_opt"] == "Video + Audio":
             cur_filter = cur_stream.filter(

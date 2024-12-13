@@ -33,8 +33,8 @@ class VidInfo:
     self.vid_dl_option.grid(column=0, row=1, padx=(10, 0), sticky="w")
     self.vid_res_option.grid(column=1, row=1, padx=(10, 10), sticky="w")
 
-    self.vid_duriation_lbl.grid(column=0, row=2, pady=(10, 10), padx=(10, 0), sticky="w")
-    self.vid_size_lbl.grid(column=1, row=2, pady=(10,10), padx=(10, 10), sticky="w")
+    self.vid_duriation_lbl.grid(column=0, row=3, pady=(10, 10), padx=(10, 0), sticky="w")
+    self.vid_size_lbl.grid(column=1, row=3, pady=(10,10), padx=(10, 10), sticky="w")
 
   #Create video widgets
   def create_vid_widgets(self)->None:
@@ -128,11 +128,32 @@ class VidInfo:
       )
     self.vid_dl_progress_txt = ctk.CTkLabel(
         self.vid_ct_frame, 
-        text="25%", 
+        text="0%", 
         fg_color="transparent", 
-        font=("ariel", 20))
-    self.vid_dl_progress_txt.grid(column=0, row=0, pady=50, padx=(10, 10), sticky="w")
-    self.vid_dl_progress.grid(column=0, row=1, padx=(10, 0), columnspan=3, sticky="w")
+        font=("ariel", 15))
+    self.vid_dl_progress_txt.grid(column=0, row=1, padx=(10, 10), sticky="w")
+    self.vid_dl_progress.grid(column=0, row=2, padx=(10, 0), columnspan=3, sticky="w")
+
+    #Set progress bar progress
+  def set_progress(self, stream, chunk, bytes_remaining)->None:
+    total_size:str|int = stream.filesize
+    bytes_downloaded:str|int = total_size - bytes_remaining
+    percentage_left:str|int = bytes_downloaded / total_size * 100
+    progess_per:int = int(percentage_left)
+
+    #update progress text
+    self.vid_dl_progress_txt.configure(text=f"{progess_per}%")
+    self.vid_dl_progress_txt.update()
+
+    #update progress bar
+    self.vid_dl_progress.set(float(percentage_left)/100)
+    self.vid_dl_progress.update()
+
+  #Runs after video has been completed
+  def set_complete(self,stream, chunk)->None:
+    #update progress text
+    self.vid_dl_progress_txt.configure(text=f"Complete!",text_color="green")
+    self.parent.is_downloading = False
 
   #Adds video info to frame
   def append_vid_info(self):
