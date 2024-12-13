@@ -5,6 +5,7 @@ from utils.application import Application
 from utils.Window import SettingsWindow
 from utils.config import Config
 from utils.utils import Utils
+from app.vidinfo import VidInfo
 
 class AppCmd:
   def __init__(self):
@@ -59,8 +60,13 @@ class AppCmd:
         self.app.vid_queue.append(self.app.vid_info) #Add video to queue
 
         self.check_vid_resoultion(index)
-        self.app.vid_frame.append_vid_info()
         
+        # Create a new VidInfo instance for the current video
+        new_vid_info = VidInfo(parent=self.app)
+        new_vid_info.append_vid_info()
+        #append it to app parent
+        self.app.vid_frames.append(new_vid_info)
+
         #reset progress bar
         self.destroy_progress_frame()
       except:
@@ -120,6 +126,7 @@ class AppCmd:
 
         self.app.vid_info = {}
         self.app.vid_queue = []
+        self.app.vid_frames = []
 
         self.app.frames.create_main_frame()
         self.app.app_append.append_widgets()
@@ -177,6 +184,8 @@ class AppCmd:
         cur["size"] = Utils.calculate_file_size(cur)
       elif txt in Config.res_options:
         cur["res_opt"] = txt
+
+      self.update_single_video_info(i, cur)
       self.check_vid_resoultion(i)
 
   #Sets app widgets to the values in config
@@ -212,6 +221,11 @@ class AppCmd:
   def create_dialog_notfication(self, msg:str)->None:
     messagebox.showinfo("Notification", f"{msg}")
 
+  #update info
+  def update_single_video_info(self, i:int, new_info:dict):
+    vid_info_instance = self.app.vid_frames[i]
+    vid_info_instance.update_vid_info(new_info)
+
   #Runs on download button click
   def download_btn(self)->None:
     if self.app.is_downloading:
@@ -225,7 +239,7 @@ class AppCmd:
       try:
         self.app.is_downloading = True
         #loop over video queue
-        for video in self.app.vid_queue:
+        for i, video in enumerate(self.app.vid_queue):
           cur_vid_yt = YouTube(
             video["url"], 
             on_progress_callback=self.set_progress, 
@@ -245,8 +259,8 @@ class AppCmd:
             cur_filter.download(f"{Config.folder_path}")
           else:
             cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
-
-        #Append progress content to frame
+      
+        #bottom progress frame
         self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
         self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
         self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")

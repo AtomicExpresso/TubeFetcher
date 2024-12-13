@@ -5,7 +5,7 @@ from io import BytesIO
 from requests import get
 from tkinter.font import BOLD
 from PIL import Image
-
+  
 #Handles video info frame
 class VidInfo:
   def __init__(self, parent):
@@ -89,7 +89,7 @@ class VidInfo:
       command=lambda cur_val:self.parent.set_dl_single_clbck(txt=cur_val, i=index))
     #Set vid values to the ones selected
     self.vid_dl_option.set(Config.dl_cur_option)
-    self.vid_res_option.set(Config.res_cur_option) 
+    self.vid_res_option.set(Config.res_cur_option)
 
   #fetch video image
   def fetch_vid_thumbnail(self):
@@ -100,6 +100,39 @@ class VidInfo:
 
     vid_thumbnail_img = Image.open(BytesIO(img_data))
     self.vid_thumbnail = ctk.CTkImage(light_image=vid_thumbnail_img, size=(150,120))
+
+  def update_vid_info(self, new_info: dict):
+    #change specified fields
+    for key, value in new_info.items():
+      if key in self.info:
+        self.info[key] = value
+    
+    # Update the widgets
+    if self.vid_title_lbl:
+      self.vid_title_lbl.configure(text=f"{self.info['title']}")
+        
+    if self.vid_size_lbl:
+      self.vid_size_lbl.configure(text=f"Size: {self.info['size']}")
+
+  def dl_in_progress(self):
+    #destroy options to make room for progress bar
+    self.vid_res_option.destroy()
+    self.vid_dl_option.destroy()
+
+    #create progress bar
+    self.vid_dl_progress = ctk.CTkProgressBar(
+        self.vid_ct_frame, 
+        progress_color=f"{Config.progress_color}", 
+        orientation="horizontal", 
+        width=250
+      )
+    self.vid_dl_progress_txt = ctk.CTkLabel(
+        self.vid_ct_frame, 
+        text="25%", 
+        fg_color="transparent", 
+        font=("ariel", 20))
+    self.vid_dl_progress_txt.grid(column=0, row=0, pady=50, padx=(10, 10), sticky="w")
+    self.vid_dl_progress.grid(column=0, row=1, padx=(10, 0), columnspan=3, sticky="w")
 
   #Adds video info to frame
   def append_vid_info(self):

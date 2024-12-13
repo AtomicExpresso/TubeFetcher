@@ -29,6 +29,8 @@ class Application(ctk.CTk):
 
     self.is_downloading:bool = False #used for preventing the user for changing res or dl options while a download is in progress
 
+    self.vid_frames = [] #list of pointers/references to vid frames
+
     self.frames = AppFrames(parent=self)
     self.widgets = AppWidgets(parent=self)
     self.vid_frame = VidInfo(parent=self)
