@@ -27,6 +27,7 @@ class VidInfo:
     #Append widgets to grid
     self.vid_tn_frame.grid(column=0, row=0, padx=10, pady=10, sticky="n")
     self.vid_ct_frame.grid(column=1, row=0, padx=10, pady=10, sticky="n")
+    self.vid_ct_opt_frame.grid(column=0, row=1, padx=10, pady=10, sticky="w")
     self.vid_info_frame.grid(column=2, row=0, padx=10, pady=10, sticky="e")
     self.vid_frame.grid(row=[len(self.parent.vid_queue)+1], column=0, columnspan=3, padx=20, pady=5, sticky="nsew")
 
@@ -58,6 +59,10 @@ class VidInfo:
     self.vid_ct_frame = ctk.CTkFrame(
       self.vid_frame, 
       fg_color=f"{Config.primary_color}")
+    #--option-ct-frame (goes in ct frame)
+    self.vid_ct_opt_frame = ctk.CTkFrame(
+      self.vid_ct_frame, 
+      fg_color=f"{Config.primary_color}")
     #--info frame
     self.vid_info_frame = ctk.CTkFrame(
       self.vid_frame, 
@@ -71,10 +76,10 @@ class VidInfo:
       image=self.vid_thumbnail)
     #bottom row of CT frame
     self.vid_duriation_lbl = ctk.CTkLabel(
-      self.vid_ct_frame, 
+      self.vid_ct_opt_frame, 
       text=f"Duriation: {self.info["duriation"]}")
     self.vid_size_lbl = ctk.CTkLabel(
-      self.vid_ct_frame, 
+      self.vid_ct_opt_frame, 
       text=f"Size: {self.info["size"]}")
   
   def create_vid_images(self)->None:
@@ -96,18 +101,18 @@ class VidInfo:
     
   def create_vid_options(self)->None:
     self.vid_dl_option = ctk.CTkOptionMenu(
-      self.vid_ct_frame, 
+      self.vid_ct_opt_frame, 
       fg_color=f"{Config.secondary_color}", 
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.dl_options], 
       command=lambda cur_val: self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     self.vid_res_option = ctk.CTkOptionMenu(
-      self.vid_ct_frame, 
+      self.vid_ct_opt_frame, 
       fg_color=f"{Config.secondary_color}", 
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
-      values=[*Config.res_options], 
+      values=[*Config.res_options],
       command=lambda cur_val:self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     #Set vid option values to the ones selected
     self.vid_dl_option.set(Config.dl_cur_option)
@@ -148,8 +153,8 @@ class VidInfo:
 
   #Shortens text length
   def shorten_txt_length(self)->None:
-    #shorten video title if it suppasses 35 chars
-    if len(self.info['title']) < 35:
+    #shorten video title if it suppasses 55 chars
+    if len(self.info['title']) < 55:
       self.vid_title_lbl = ctk.CTkLabel(
         self.vid_ct_frame, 
         text=f"{self.info["title"]}", 
@@ -157,7 +162,7 @@ class VidInfo:
     else:
       self.vid_title_lbl = ctk.CTkLabel(
         self.vid_ct_frame, 
-        text=f"{self.info["title"][:35]}...", 
+        text=f"{self.info["title"][:55]}...", 
         font=('ariel', 13, BOLD))
 
   def update_vid_info(self, new_info: dict)->None:
@@ -181,13 +186,13 @@ class VidInfo:
 
     #create progress bar
     self.vid_dl_progress = ctk.CTkProgressBar(
-        self.vid_ct_frame, 
+        self.vid_ct_opt_frame, 
         progress_color=f"{Config.progress_color}", 
         orientation="horizontal", 
         width=250
       )
     self.vid_dl_progress_txt = ctk.CTkLabel(
-        self.vid_ct_frame, 
+        self.vid_ct_opt_frame, 
         text="0%", 
         fg_color="transparent", 
         font=("ariel", 15))
