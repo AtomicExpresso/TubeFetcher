@@ -17,7 +17,7 @@ class VidInfo:
     #Cols
     self.vid_frame.grid_columnconfigure(0, weight=0)
     self.vid_frame.grid_columnconfigure(1, weight=0)
-    self.vid_frame.grid_columnconfigure(2, weight=0)
+    self.vid_frame.grid_columnconfigure(2, weight=1)
     #Rows
     self.vid_ct_frame.grid_rowconfigure(0, weight=0)
     self.vid_ct_frame.grid_rowconfigure(1, weight=0)
@@ -27,7 +27,7 @@ class VidInfo:
     #Append widgets to grid
     self.vid_tn_frame.grid(column=0, row=0, padx=10, pady=10, sticky="n")
     self.vid_ct_frame.grid(column=1, row=0, padx=10, pady=10, sticky="n")
-    self.vid_info_frame.grid(column=2, row=0, padx=10, pady=10, sticky="n")
+    self.vid_info_frame.grid(column=2, row=0, padx=10, pady=10, sticky="e")
     self.vid_frame.grid(row=[len(self.parent.vid_queue)+1], column=0, columnspan=3, padx=20, pady=5, sticky="nsew")
 
     #TN frame

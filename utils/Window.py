@@ -6,7 +6,7 @@ from utils.config import Config
 class Window(ctk.CTkToplevel):
   def __init__(self, parent):
     super().__init__(parent)
-    self.geometry("300x200")
+    self.geometry(f"{Config.secondary_win_width}x{Config.secondary_win_height}")
 
 class SettingsWindow(Window):
   def __init__(self, parent):
@@ -93,38 +93,63 @@ class InfoWindow(Window):
     self.info:dict = self.parent.vid_queue[self.index]
   
   def create_info_frames(self)->None:
-    self.info_window_frame = ctk.CTkFrame(
+    #Main info frame
+    self.info_window_frame = ctk.CTkScrollableFrame(
       self, 
+      fg_color=f"{Config.primary_color}")
+    #Attribute frame
+    self.info_attr_frame = ctk.CTkFrame(
+      self.info_window_frame, 
+      fg_color=f"{Config.primary_color}")
+    #Description frame
+    self.info_desc_frame = ctk.CTkFrame(
+      self.info_window_frame, 
       fg_color=f"{Config.primary_color}")
     
   def create_info_labels(self)->None:
     #video title
     self.titleLbl = ctk.CTkLabel(
-      self.info_window_frame, 
-      text=f"Title: {self.info["title"]}")
-    #Misc attributes
+      self.info_attr_frame, 
+      text=f"Title:",
+      font=('ariel', 14, BOLD))
+    self.titleContentLbl = ctk.CTkLabel(
+      self.info_attr_frame, 
+      text=f"{self.info["title"]}")
+    #Video author
     self.authorLbl = ctk.CTkLabel(
-        self.info_window_frame, 
-        text=f"Author: {self.info["author"]}")
+        self.info_attr_frame, 
+        text=f"Author:",
+        font=('ariel', 14, BOLD))
+    self.authorContentLbl = ctk.CTkLabel(
+        self.info_attr_frame, 
+        text=f"{self.info["author"]}")
+    #Video duriation
     self.duriationLbl = ctk.CTkLabel(
-        self.info_window_frame, 
-        text=f"Duriation: {self.info["duriation"]}")
+        self.info_attr_frame, 
+        text=f"Duriation:",
+        font=('ariel', 14, BOLD))
+    self.duriationContentLbl = ctk.CTkLabel(
+        self.info_attr_frame, 
+        text=f"{self.info["duriation"]}")
+    #Video file size
     self.sizeLbl = ctk.CTkLabel(
-        self.info_window_frame, 
-        text=f"Size: {self.info["size"]}")
+        self.info_attr_frame, 
+        text=f"Size:",
+        font=('ariel', 14, BOLD))
+    self.sizeContentLbl = ctk.CTkLabel(
+        self.info_attr_frame, 
+        text=f"{self.info["size"]}")
     #Video Description
     self.descLbl = ctk.CTkLabel(
-        self.info_window_frame, 
-        text=f"Description:")
-    #Check length
-    if len(self.info["desc"]) > 500:
-      self.descContentLbl = ctk.CTkLabel(
-        self.info_window_frame, 
-        text=f"{self.info["desc"][:500]}...")
-    else:
-      self.descContentLbl = ctk.CTkLabel(
-        self.info_window_frame, 
-        text=f"{self.info["desc"]}")
+        self.info_desc_frame, 
+        text=f"Description:",
+        font=('ariel', 14, BOLD))
+    #Description content
+    self.descContentLbl = ctk.CTkLabel(
+      self.info_desc_frame, 
+      text=f"{self.info["desc"]}",
+      wraplength=Config.max_paragraph_len,
+      justify="left")
       
   def create_info_btns(self)->None:
     #Closes menu
@@ -139,26 +164,35 @@ class InfoWindow(Window):
     self.grid_columnconfigure(0, weight=1)
     self.grid_rowconfigure(0, weight=1)
 
-    self.info_window_frame.grid_columnconfigure(0, weight=1)
-    self.info_window_frame.grid_rowconfigure(1, weight=0)
-    self.info_window_frame.grid_rowconfigure(2, weight=0)
+    self.info_window_frame.grid_rowconfigure(0, weight=1)
+    self.info_window_frame.grid_rowconfigure(1, weight=1)
+    self.info_window_frame.grid_rowconfigure(2, weight=1)
     self.info_window_frame.grid_rowconfigure(3, weight=0)
-    self.info_window_frame.grid_rowconfigure(4, weight=0)
-    self.info_window_frame.grid_rowconfigure(5, weight=0)
-    self.info_window_frame.grid_rowconfigure(6, weight=0)
-    self.info_window_frame.grid_rowconfigure(7, weight=1)
+
+    self.info_attr_frame.grid_columnconfigure(0, weight=0)
+    self.info_attr_frame.grid_columnconfigure(1, weight=1)
 
   def append_info_grid(self)->None:
-    self.info_window_frame.grid(row=0, columnspan=3, column=0, sticky="nsew")
+    self.info_window_frame.grid(row=0, column=0, sticky="nsew")
+    self.info_attr_frame.grid(row=1, column=0, sticky="nsew")
+    self.info_desc_frame.grid(row=2, column=0, sticky="nsew")
 
-    self.titleLbl.grid(row=1, column=0, padx=(10, 0), pady=(20, 0), sticky="w")
-    self.authorLbl.grid(row=2, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
-    self.duriationLbl.grid(row=3, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
-    self.sizeLbl.grid(row=4, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
-    self.descLbl.grid(row=5, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
-    self.descContentLbl.grid(row=6, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.titleLbl.grid(row=0, column=0, padx=(10, 0), pady=(20, 0), sticky="w")
+    self.titleContentLbl.grid(row=0, column=1, pady=(20, 0), sticky="w")
+    
+    self.authorLbl.grid(row=1, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.authorContentLbl.grid(row=1, column=1, pady=(0, 0), sticky="w")
 
-    self.closeBtn.grid(row=7, column=0, columnspan=3, padx=(10, 10), pady=(10, 10), sticky="s")
+    self.duriationLbl.grid(row=2, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.duriationContentLbl.grid(row=2, column=1, pady=(0, 0), sticky="w")
+
+    self.sizeLbl.grid(row=3, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.sizeContentLbl.grid(row=3, column=1, pady=(0, 0), sticky="w")
+
+    self.descLbl.grid(row=0, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.descContentLbl.grid(row=1, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+
+    self.closeBtn.grid(row=3, column=0, padx=(10, 10), pady=(10, 10), sticky="s")
 
   def create_info_widgets(self)->None:
     self.fetch_info()

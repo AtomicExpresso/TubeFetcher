@@ -4,13 +4,12 @@ from app.frames import AppFrames
 from app.app_widgets import AppWidgets
 from app.app_append import AppAppend
 from utils.utils import Utils
+from utils.config import Config
 
 class Application(ctk.CTk):
   def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, info_clbck, set_dl_clbck, set_dl_single_clbck, clear_mf_clbck):
     super().__init__()
-    self.width = 500
-    self.height = 350
-    self.geometry(f"{self.width}x{self.height}")
+    self.geometry(f"{Config.primary_win_width}x{Config.primary_win_height}")
     self.title("TubeFetcher")
 
     #setup callback functions

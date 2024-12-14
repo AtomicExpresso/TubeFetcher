@@ -3,7 +3,7 @@ from utils.cmd import AppCmd
 
 """
 todo:
--Fix design issue with video frame
+-Fix btn bug with vid info frame
 """
 #Run application
 #these are just test videos to make sure the app works, test cases will be deleted upon release
