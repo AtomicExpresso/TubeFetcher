@@ -103,7 +103,7 @@ class AppWidgets:
       text="", 
       width=45,
       command=self.parent.clear_mf_clbck)
-  
+
   #creates all widgets
   def create_widgets(self):
     #top frame widgets

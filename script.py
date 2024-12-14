@@ -4,7 +4,6 @@ from utils.cmd import AppCmd
 """
 todo:
 -Add info button for videos
--Add total progress bar to calculate how many videos need to be downloaded
 """
 #Run application
 #https://www.youtube.com/shorts/IQDA39A44AA

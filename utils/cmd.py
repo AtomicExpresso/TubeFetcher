@@ -94,18 +94,16 @@ class AppCmd:
     self.set_settings_values()
 
   #Set progress bar progress
-  def set_progress(self, stream, chunk, bytes_remaining)->None:
-    total_size:str|int = stream.filesize
-    bytes_downloaded:str|int = total_size - bytes_remaining
-    percentage_left:str|int = bytes_downloaded / total_size * 100
-    progess_per:int = int(percentage_left)
+  def set_progress(self)->None:
+    percentage_left:int|float = self.app.vid_dl_count/len(self.app.vid_queue)
+    print(percentage_left)
 
     #update progress text
-    self.app.widgets.download_progress_txt.configure(text=f"{progess_per}%")
+    self.app.widgets.download_progress_txt.configure(text=f"{self.app.vid_dl_count} of {len(self.app.vid_queue)} completed")
     self.app.widgets.download_progress_txt.update()
 
     #update progress bar
-    self.app.widgets.download_progress_bar.set(float(percentage_left)/100)
+    self.app.widgets.download_progress_bar.set(float(percentage_left))
     self.app.widgets.download_progress_bar.update()
 
   #Runs after all videos has been completed
@@ -277,6 +275,8 @@ class AppCmd:
             cur_filter.download(f"{Config.folder_path}")
           else:
             cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
+          #update total download progress
+          self.set_progress()
 
         #mark download queue as completed
         self.set_complete()
