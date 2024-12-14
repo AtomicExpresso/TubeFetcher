@@ -27,7 +27,7 @@ class VidInfo:
     #Append widgets to grid
     self.vid_tn_frame.grid(column=0, row=0, padx=10, pady=10, sticky="n")
     self.vid_ct_frame.grid(column=1, row=0, padx=10, pady=10, sticky="n")
-    self.vid_info_frame.grid(column=2, row=0, padx=10, pady=10, sticky="w")
+    self.vid_info_frame.grid(column=2, row=0, padx=10, pady=10, sticky="n")
     self.vid_frame.grid(row=[len(self.parent.vid_queue)+1], column=0, columnspan=3, padx=20, pady=5, sticky="nsew")
 
     #TN frame
@@ -72,7 +72,7 @@ class VidInfo:
     #bottom row of CT frame
     self.vid_duriation_lbl = ctk.CTkLabel(
       self.vid_ct_frame, 
-      text=f"Duriation: {Utils.calculate_Time(self.info["duriation"])}")
+      text=f"Duriation: {self.info["duriation"]}")
     self.vid_size_lbl = ctk.CTkLabel(
       self.vid_ct_frame, 
       text=f"Size: {self.info["size"]}")
@@ -91,25 +91,24 @@ class VidInfo:
       hover_color=f"{Config.btn_color}", 
       text="", 
       bg_color="transparent", 
-      width=45)
+      width=45,
+      command=lambda: self.parent.info_clbck(self.index))
     
   def create_vid_options(self)->None:
-    index = int(self.vid_index.cget("text"))
-
     self.vid_dl_option = ctk.CTkOptionMenu(
       self.vid_ct_frame, 
       fg_color=f"{Config.secondary_color}", 
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.dl_options], 
-      command=lambda cur_val: self.parent.set_dl_single_clbck(txt=cur_val, i=index))
+      command=lambda cur_val: self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     self.vid_res_option = ctk.CTkOptionMenu(
       self.vid_ct_frame, 
       fg_color=f"{Config.secondary_color}", 
       button_color=f"{Config.btn_color}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.res_options], 
-      command=lambda cur_val:self.parent.set_dl_single_clbck(txt=cur_val, i=index))
+      command=lambda cur_val:self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     #Set vid option values to the ones selected
     self.vid_dl_option.set(Config.dl_cur_option)
     self.vid_res_option.set(Config.res_cur_option)
@@ -119,6 +118,8 @@ class VidInfo:
     self.vid_index = ctk.CTkLabel(
       self.vid_ct_frame, 
       text=f"{self.info["index"]}")
+    #gets the text from vid_index
+    self.index = int(self.vid_index.cget("text"))
 
   #Create video widgets
   def create_vid_widgets(self)->None:

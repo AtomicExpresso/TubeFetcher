@@ -6,7 +6,7 @@ from app.app_append import AppAppend
 from utils.utils import Utils
 
 class Application(ctk.CTk):
-  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, set_dl_clbck, set_dl_single_clbck, clear_mf_clbck):
+  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, info_clbck, set_dl_clbck, set_dl_single_clbck, clear_mf_clbck):
     super().__init__()
     self.width = 500
     self.height = 350
@@ -18,6 +18,7 @@ class Application(ctk.CTk):
     self.folder_path_clbck = folder_path_clbck #Opens folder dialog
     self.add_video_clbck = add_vid_clbck #Adds new videos to mainframe
     self.st_clbck = st_clbck #open settings window
+    self.info_clbck = info_clbck #open info window
     self.set_dl_option_clbck = set_dl_clbck #sets default resoultion and download type for all new videos
     self.set_dl_single_clbck = set_dl_single_clbck #Sets resoultion and download type for a single video
     self.clear_mf_clbck = clear_mf_clbck #Clear main frame

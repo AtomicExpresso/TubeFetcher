@@ -3,9 +3,10 @@ from utils.cmd import AppCmd
 
 """
 todo:
--Add info button for videos
+-Fix design issue with video frame
 """
 #Run application
+#these are just test videos to make sure the app works, test cases will be deleted upon release
 #https://www.youtube.com/shorts/IQDA39A44AA
 #https://www.youtube.com/watch?v=PCH-l94KnXU
 #https://www.youtube.com/watch?v=iJpxJuv0mqY

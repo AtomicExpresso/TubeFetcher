@@ -2,7 +2,7 @@ from tkinter import messagebox
 import customtkinter as ctk
 from pytubefix import YouTube
 from utils.application import Application
-from utils.Window import SettingsWindow
+from utils.Window import SettingsWindow, InfoWindow
 from utils.config import Config
 from utils.utils import Utils
 from app.vidinfo import VidInfo
@@ -14,11 +14,13 @@ class AppCmd:
       folder_path_clbck=self.select_folder, 
       add_vid_clbck=self.add_video,
       st_clbck=self.open_settings_window,
+      info_clbck=self.open_info_window,
       set_dl_clbck=self.set_download_option,
       set_dl_single_clbck=self.set_single_download_option,
       clear_mf_clbck=self.clear_main_frame)
-    
+    #Default window state
     self.settings_window = None
+    self.info_window = None
 
   #For adding videos to main frame
   def add_video(self)->None:
@@ -49,7 +51,7 @@ class AppCmd:
           "thumbnail": thumbnail, 
           "title":title, 
           "desc":desc, 
-          "duriation": duriation, 
+          "duriation": Utils.calculate_Time(duriation), 
           "author":author, 
           "url": self.app.url,
           "res_opt": res_opt,
@@ -92,11 +94,15 @@ class AppCmd:
     self.settings_window = SettingsWindow(self.app)
     self.settings_window.grab_set()
     self.set_settings_values()
+  
+  #open the info window
+  def open_info_window(self, i:int)->None:
+    self.info_window = InfoWindow(self.app, i)
+    self.info_window.grab_set()
 
   #Set progress bar progress
   def set_progress(self)->None:
     percentage_left:int|float = self.app.vid_dl_count/len(self.app.vid_queue)
-    print(percentage_left)
 
     #update progress text
     self.app.widgets.download_progress_txt.configure(text=f"{self.app.vid_dl_count} of {len(self.app.vid_queue)} completed")
