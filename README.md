@@ -1,28 +1,33 @@
-## TubeFetcher
-TubeFetcher is a python-based application that allows users to archive/download YouTube videos.
+# TubeFetcher <br> ![version](https://img.shields.io/github/v/release/atomicexpresso/TubeFetcher?label=latest-release) ![downloads](https://img.shields.io/github/downloads/atomicexpresso/TubeFetcher/total) ![License](https://img.shields.io/github/license/atomicexpresso/TubeFetcher)
 
-![Screenshot 2024-12-01 112349](https://github.com/user-attachments/assets/a95628be-025c-48f4-9192-f15815c9862f)
+TubeFetcher is a Python-based GUI application that makes it easy to archive and download YouTube videos or audio.
 
-
-## Usage
-TubeFetcher allows you to download both videos and audio. To get started, input the video url, press the "plus" icon and then hit download. 
-All downloads will appear at your specified folder path. If no folder is provided, then a new one will appear at the programs directory.
+### Preview
+![image](https://github.com/user-attachments/assets/31f28fd7-f2b5-4684-894a-d45fbb4062e1)
 
 ## Features
-- Settings menu: Allows you to specify the default resoultion and download type.
-- Video queue: All the videos you want to download will appear in a list and downloaded in order
-- Supports both video and audio format: Content can either be in the form of videos or audio
-- Multiple resoultions: Supports 1080p, 780p, 360p. If the specified resoultion isnt available, then it will fallback to the next available resoultion
+- Video queue: Add multiple videos to a list for sequential downloading.
+- Video & Audio support: Download content in video or audio format.
+- Multiple Resoultions: Choose from 1080p, 720p, or 360p. If a specified resolution isn't available, the best alternative will be used.
+- Settings Menu: Customize default resolution, download type, and file path.
+- Save System: Automatically saves your preferences.
+- Metadata Display: View video metadata in a separate window.
 
-## Requirements
-Make sure you have Python installed on your system. The required libraries can be installed using the requirements.txt file.
+## Usage
+1. Paste the video URL into the input box.
+2. Press the "Plus" button to add the video to the queue.
+3. Once ready, click the green "Download" button.
+4. Wait for the videos to finish downloading. All files will appear at the specified file path.
+
+## Building from source
+If you'd like to download and compile the application yourself, follow these steps:
 
 1. download the repo
 ```bash
   git clone https://github.com/AtomicExpresso/TubeFetcher.git
   cd script
 ```
-2. Install the required libraries (if you havent already):
+2. Install the required libraries:
 ```bash
   pip install -r requirements.txt
 ```
@@ -32,12 +37,15 @@ Make sure you have Python installed on your system. The required libraries can b
 ```
 
 ## Libraries used
-- CustomTkinter
-- Pytube
+- Customtkinter
 - Pillow
+- Pyperclip
 - Requests
+- Json
+- Pytube
 
 ## License
-This repository is for educational purposes only. TubeFetcher and it's contributers are not responsible for any misuse of this software. TubeFetcher, does not condone the use of this application in practices that violate local laws such as but not limited to the DMCA. TubeFetcher and its maintainers call upon the personal responsibility of its users to use this application in a fair way, as it is intended to be used.
+This repository is intended for educational and archival purposes only. TubeFetcher and its contributors are not responsible for any misuse of this software.
+TubeFetcher does not condone practices that violate local laws, such as (but not limited to) the DMCA. Users are expected to act responsibly and ensure compliance with applicable laws.
 
-This app is licencsed under the MIT [license](https://github.com/AtomicExpresso/TubeFetcher?tab=MIT-1-ov-file)
+This project is licensed under the MIT License. See the full [license](https://github.com/AtomicExpresso/TubeFetcher?tab=MIT-1-ov-file) for details.
