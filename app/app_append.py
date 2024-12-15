@@ -43,5 +43,4 @@ class AppAppend:
     #frames
     self.append_top_widgets()
     self.append_main_widgets()
-    self.append_progress_widgets()
     self.append_bottom_widgets()

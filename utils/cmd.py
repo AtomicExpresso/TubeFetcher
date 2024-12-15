@@ -302,14 +302,13 @@ class AppCmd:
             cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
           #update total download progress
           self.set_progress()
-          #mark download queue as completed
-          self.set_complete()
         except:
           self.handle_dl_error(i)
+      #mark download queue as completed
+      self.set_complete()
     except:
       self.app.is_downloading = False
       self.throw_progress_error(msg="Unable to download")
-      pass
 
   def run(self)->None:
     self.app.mainloop()
