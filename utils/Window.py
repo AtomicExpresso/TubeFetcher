@@ -97,6 +97,10 @@ class InfoWindow(Window):
     self.info_window_frame = ctk.CTkScrollableFrame(
       self, 
       fg_color=f"{Config.primary_color}")
+    #Main-bottom info frame
+    self.info_bottom_frame = ctk.CTkFrame(
+      self, 
+      fg_color=f"{Config.primary_color}")
     #Attribute frame
     self.info_attr_frame = ctk.CTkFrame(
       self.info_window_frame, 
@@ -154,7 +158,7 @@ class InfoWindow(Window):
   def create_info_btns(self)->None:
     #Closes menu
     self.closeBtn = ctk.CTkButton(
-      self.info_window_frame, 
+      self.info_bottom_frame, 
       fg_color=f"{Config.btn_color}", 
       hover_color=f"{Config.btn_color_hover}", 
       text="Close", 
@@ -163,6 +167,7 @@ class InfoWindow(Window):
   def config_info_grid(self)->None:
     self.grid_columnconfigure(0, weight=1)
     self.grid_rowconfigure(0, weight=1)
+    self.grid_rowconfigure(1, weight=0)
 
     self.info_window_frame.grid_rowconfigure(0, weight=1)
     self.info_window_frame.grid_rowconfigure(1, weight=1)
@@ -174,6 +179,7 @@ class InfoWindow(Window):
 
   def append_info_grid(self)->None:
     self.info_window_frame.grid(row=0, column=0, sticky="nsew")
+    self.info_bottom_frame.grid(row=1, column=0, sticky="sew")
     self.info_attr_frame.grid(row=1, column=0, sticky="nsew")
     self.info_desc_frame.grid(row=2, column=0, sticky="nsew")
 
@@ -190,9 +196,9 @@ class InfoWindow(Window):
     self.sizeContentLbl.grid(row=3, column=1, pady=(0, 0), sticky="w")
 
     self.descLbl.grid(row=0, column=0, padx=(10, 10), pady=(0, 0), sticky="w")
-    self.descContentLbl.grid(row=1, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.descContentLbl.grid(row=1, column=0, padx=(10, 0), pady=(0, 10), sticky="w")
 
-    self.closeBtn.grid(row=3, column=0, padx=(10, 10), pady=(10, 10), sticky="s")
+    self.closeBtn.grid(row=0, column=0, padx=(10, 10), pady=(10, 10), sticky="nsew")
 
   def create_info_widgets(self)->None:
     self.fetch_info()
