@@ -8,7 +8,11 @@ class Config:
   btn_color_download:str = f"#4ea94b"
   progress_color:str = f"#4ea94b"
 
+  #-Error Colors
   error_txt_color:str = f"#eb4034"
+
+  #-Text Colors
+  success_txt_color:str = f"#4ea94b"
 
   #-Window size
   primary_win_width:int = 500
@@ -17,7 +21,7 @@ class Config:
   secondary_win_width:int = 300
   secondary_win_height:int = 200
 
-  #-max-text-length
+  #-max text length
   max_paragraph_len:int = 500
 
   #-Options

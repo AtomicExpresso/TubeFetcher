@@ -8,7 +8,7 @@ from utils.config import Config
 from utils.utils import Utils
 from app.vidinfo import VidInfo
 
-#class for handeling app commands
+#class for handeling app commands, handles callback functions, and downloading videos
 class AppCmd:
   def __init__(self):
     self.app = Application(
@@ -124,7 +124,7 @@ class AppCmd:
   #Runs after all videos has been completed
   def set_complete(self)->None:
     #update progress text
-    self.app.widgets.download_progress_txt.configure(text=f"Complete!",text_color="green")
+    self.app.widgets.download_progress_txt.configure(text=f"Complete!",text_color=f"{Config.success_txt_color}")
     self.app.widgets.download_progress_bar.set(100)
     self.app.widgets.download_progress_bar.update()
     self.app.is_downloading = False
@@ -246,35 +246,44 @@ class AppCmd:
     vid_info_instance = self.app.vid_frames[i]
     vid_info_instance.dl_in_progress()
 
+  #Error handeling for if a video fails to download
+  def handle_dl_error(self, i:int)->None:
+    vid_info_instance = self.app.vid_frames[i]
+    vid_info_instance.handle_error()
+
   #Runs on download button click
   def download_btn(self)->None:
     if self.app.is_downloading:
       self.create_dialog_notfication("Unable to download because a download is already in progress")
       pass
-    else:
+
     #Check if progress frame is missing
-      self.check_progress_frame()
-      self.reset_feilds()
+    self.check_progress_frame()
+    self.reset_feilds()
 
-      try:
-        self.app.is_downloading = True
-        #loop through video frames
-        for i in range(len(self.app.vid_frames)):
-          #build progress bar for single video
-          self.create_single_video_progress(i)
+    try:
+      self.app.is_downloading = True
+      #loop through video frames
+      for i in range(len(self.app.vid_frames)):
+        #build progress bar for single video
+        self.create_single_video_progress(i)
+    except:
+      self.create_dialog_notfication("an error occured while building progress bars")
+      raise ValueError("an error occured while building progress bars")
+    try:
+      #bottom progress frame
+      self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
+      self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
+      self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
+      self.app.widgets.error_txt.configure(text="")
 
-        #bottom progress frame
-        self.app.frames.progress_frame.grid(row=2, column=0, columnspan=3, sticky="nsew")
-        self.app.widgets.download_progress_txt.grid(row=0, column=0, pady=(10, 0), padx=(20, 0))
-        self.app.widgets.download_progress_bar.grid(row=1, column=0, columnspan=2, padx=(20, 20), pady=(0, 10), sticky="ew")
-        self.app.widgets.error_txt.configure(text="")
-
-        #loop over video queue
-        for i, video in enumerate(self.app.vid_queue):
+      #loop over video queue
+      for i, video in enumerate(self.app.vid_queue):
+        try:
           cur_vid_yt = YouTube(
-            video["url"], 
-            on_progress_callback=self.app.vid_frames[i].set_progress, 
-            on_complete_callback=self.app.vid_frames[i].set_complete)
+              video["url"], 
+              on_progress_callback=self.app.vid_frames[i].set_progress, 
+              on_complete_callback=self.app.vid_frames[i].set_complete)
           cur_stream = cur_vid_yt.streams
           cur_filter = None
 
@@ -284,7 +293,7 @@ class AppCmd:
               res=f"{video["res_opt"]}").get_highest_resolution()
           elif video["dl_opt"] == "Audio":
             cur_filter = cur_stream.get_audio_only()
-          
+            
           #check if desired resoultion is possible, if not find the best possible resoultion
           if cur_filter:
             cur_filter.download(f"{Config.folder_path}")
@@ -292,12 +301,14 @@ class AppCmd:
             cur_stream.get_highest_resolution().download(f"{Config.folder_path}")
           #update total download progress
           self.set_progress()
-
-        #mark download queue as completed
-        self.set_complete()
-      except:
-        self.app.is_downloading = False
-        self.throw_progress_error(msg="Invalid URL")
+          #mark download queue as completed
+          self.set_complete()
+        except:
+          self.handle_dl_error(i)
+    except:
+      self.app.is_downloading = False
+      self.throw_progress_error(msg="Unable to download")
+      pass
 
   def run(self)->None:
     self.app.mainloop()

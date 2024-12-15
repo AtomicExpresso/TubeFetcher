@@ -14,7 +14,7 @@ Libaries used:
 """
 todo:
 -Fix btn bug with vid info frame
--Add better error handeling for downloading videos, so the whole loop dosent break if 1 video fails to download
+-Add delete btn to vid info frame, so users can delete vids from queue
 """
 #Run application
 #these are just test videos to make sure the app works, test cases will be deleted upon release

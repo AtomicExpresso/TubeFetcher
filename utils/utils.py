@@ -1,6 +1,7 @@
 from utils.config import Config
 import json
 
+#Used for general utility commands, such as calculating time, file size, etc.
 class Utils:
   #Calculate total elapsed time for videos/audio
   def calculate_Time(time)->str:

@@ -10,7 +10,8 @@ from PIL import Image
 class VidInfo:
   def __init__(self, parent):
     self.parent = parent
-    self.info = None
+    self.info:dict = None #For handeling info state, its a dict of video info
+    self.error:bool = False #For handeling error state
 
   #Configure the grid
   def config_vid_grid(self)->None:
@@ -221,11 +222,9 @@ class VidInfo:
     bytes_downloaded:str|int = total_size - bytes_remaining
     percentage_left:str|int = bytes_downloaded / total_size * 100
     progess_per:int = int(percentage_left)
-
     #update progress text
     self.vid_dl_progress_txt.configure(text=f"{progess_per}%")
     self.vid_dl_progress_txt.update()
-
     #update progress bar
     self.vid_dl_progress.set(float(percentage_left)/100)
     self.vid_dl_progress.update()
@@ -233,10 +232,28 @@ class VidInfo:
   #Runs after video download has been completed
   def set_complete(self,stream, chunk)->None:
     #update progress text
-    self.vid_dl_progress_txt.configure(text=f"Complete!",text_color="green")
+    self.vid_dl_progress_txt.configure(
+      text=f"Complete!",
+      text_color=f"{Config.success_txt_color}")
     self.vid_dl_progress.set(100)
     self.vid_dl_progress.update()
     self.parent.vid_dl_count += 1 #update videos downloaded counter
+
+  #Handles error for video
+  def handle_error(self)->None:
+    self.error = True
+    self.vid_frame.configure(
+      border_color=f"{Config.error_txt_color}", 
+      border_width=2)
+    self.vid_dl_progress_txt.configure(
+      text=f"Error",
+      text_color=f"{Config.error_txt_color}")
+    self.vid_dl_progress.configure(
+        self.vid_ct_opt_frame, 
+        progress_color=f"{Config.error_txt_color}", 
+        orientation="horizontal", 
+        width=250
+      )
 
   #Adds video info to frame
   def append_vid_info(self)->None:
