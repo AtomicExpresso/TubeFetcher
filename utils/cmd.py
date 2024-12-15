@@ -20,7 +20,8 @@ class AppCmd:
       set_dl_clbck=self.set_download_option,
       set_dl_single_clbck=self.set_single_download_option,
       clear_mf_clbck=self.clear_main_frame,
-      copy_video_url_clbck=self.copy_video_url)
+      copy_video_url_clbck=self.copy_video_url,
+      dialog_notfi_clbck=self.create_dialog_notfication)
     #Default window state
     self.settings_window = None
     self.info_window = None

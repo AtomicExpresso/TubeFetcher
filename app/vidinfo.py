@@ -45,9 +45,9 @@ class VidInfo:
     self.vid_size_lbl.grid(column=1, row=3, pady=(10,10), padx=(10, 10), sticky="w")
 
     #info frame
-    self.vid_copyurl_btn.grid(column=0, row=0, pady=(10,0), padx=(10, 10), sticky="w")
-    self.vid_delete_btn.grid(column=0, row=1, pady=(10,0), padx=(10, 10), sticky="w")
-    self.vid_info_btn.grid(column=0, row=2, pady=(10,10), padx=(10, 10), sticky="w")
+    self.vid_info_btn.grid(column=0, row=0, pady=(10,0), padx=(10, 10), sticky="w")
+    self.vid_copyurl_btn.grid(column=0, row=1, pady=(10,0), padx=(10, 10), sticky="w")
+    self.vid_delete_btn.grid(column=0, row=2, pady=(10,10), padx=(10, 10), sticky="w")
 
   def create_vid_frames(self)->None:
     #--main vid frame
@@ -96,26 +96,6 @@ class VidInfo:
 
   def create_vid_btn(self)->None:
     #first row of info frame
-    self.vid_copyurl_btn = ctk.CTkButton(
-      self.vid_info_frame, 
-      image=self.linkImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
-      text="", 
-      bg_color="transparent", 
-      width=45,
-      command=lambda: self.parent.copy_video_url_clbck(self.index))
-    #second row of info frame
-    self.vid_delete_btn = ctk.CTkButton(
-      self.vid_info_frame, 
-      image=self.trashImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
-      text="", 
-      bg_color="transparent", 
-      width=45,
-      command=lambda: self.delete_video())
-    #last row of info frame
     self.vid_info_btn = ctk.CTkButton(
       self.vid_info_frame, 
       image=self.infoImg, 
@@ -125,6 +105,26 @@ class VidInfo:
       bg_color="transparent", 
       width=45,
       command=lambda: self.parent.info_clbck(self.index))
+    #second row of info frame
+    self.vid_copyurl_btn = ctk.CTkButton(
+      self.vid_info_frame, 
+      image=self.linkImg, 
+      fg_color=f"{Config.secondary_color}", 
+      hover_color=f"{Config.btn_color}", 
+      text="", 
+      bg_color="transparent", 
+      width=45,
+      command=lambda: self.parent.copy_video_url_clbck(self.index))
+    #last row of info frame
+    self.vid_delete_btn = ctk.CTkButton(
+      self.vid_info_frame, 
+      image=self.trashImg, 
+      fg_color=f"{Config.secondary_color}", 
+      hover_color=f"{Config.btn_color}", 
+      text="", 
+      bg_color="transparent", 
+      width=45,
+      command=lambda: self.delete_video())
     
   def create_vid_options(self)->None:
     self.vid_dl_option = ctk.CTkOptionMenu(
@@ -270,9 +270,12 @@ class VidInfo:
   
   #delete the video frame and remove it from queue
   def delete_video(self)->None:
-    self.parent.vid_frames.pop(self.index)
-    self.parent.vid_queue.pop(self.index)
-    self.vid_frame.destroy()
+    if not self.parent.is_downloading:
+      self.parent.vid_frames.pop(self.index)
+      self.parent.vid_queue.pop(self.index)
+      self.vid_frame.destroy()
+    else:
+      self.parent.dialog_notfi_clbck("Unable to delete video")
 
   #Adds video info to frame
   def append_vid_info(self)->None:
