@@ -76,6 +76,7 @@ class AppCmd:
         self.destroy_progress_frame()
       except:
         self.throw_progress_error(msg="Invalid URL")
+        self.create_dialog_notfication("Invalid video URL")
         raise ValueError("Invalid url")
 
   #For copying video url to clipboard, uses pyperclip libary

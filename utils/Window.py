@@ -177,19 +177,19 @@ class InfoWindow(Window):
     self.info_attr_frame.grid(row=1, column=0, sticky="nsew")
     self.info_desc_frame.grid(row=2, column=0, sticky="nsew")
 
-    self.titleLbl.grid(row=0, column=0, padx=(10, 0), pady=(20, 0), sticky="w")
+    self.titleLbl.grid(row=0, column=0, padx=(10, 10), pady=(20, 0), sticky="w")
     self.titleContentLbl.grid(row=0, column=1, pady=(20, 0), sticky="w")
     
-    self.authorLbl.grid(row=1, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.authorLbl.grid(row=1, column=0, padx=(10, 10), pady=(0, 0), sticky="w")
     self.authorContentLbl.grid(row=1, column=1, pady=(0, 0), sticky="w")
 
-    self.duriationLbl.grid(row=2, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.duriationLbl.grid(row=2, column=0, padx=(10, 10), pady=(0, 0), sticky="w")
     self.duriationContentLbl.grid(row=2, column=1, pady=(0, 0), sticky="w")
 
-    self.sizeLbl.grid(row=3, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.sizeLbl.grid(row=3, column=0, padx=(10, 10), pady=(0, 0), sticky="w")
     self.sizeContentLbl.grid(row=3, column=1, pady=(0, 0), sticky="w")
 
-    self.descLbl.grid(row=0, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.descLbl.grid(row=0, column=0, padx=(10, 10), pady=(0, 0), sticky="w")
     self.descContentLbl.grid(row=1, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
 
     self.closeBtn.grid(row=3, column=0, padx=(10, 10), pady=(10, 10), sticky="s")
