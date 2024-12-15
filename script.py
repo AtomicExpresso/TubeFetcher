@@ -2,8 +2,19 @@ import customtkinter
 from utils.cmd import AppCmd
 
 """
+Libaries used:
+-Customtkinter
+-Pillow
+-Pyperclip
+-Requests
+-Json
+-Pytube
+"""
+
+"""
 todo:
 -Fix btn bug with vid info frame
+-Add better error handeling for downloading videos, so the whole loop dosent break if 1 video fails to download
 """
 #Run application
 #these are just test videos to make sure the app works, test cases will be deleted upon release

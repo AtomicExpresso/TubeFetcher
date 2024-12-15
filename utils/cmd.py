@@ -1,4 +1,5 @@
 from tkinter import messagebox
+from pyperclip import copy
 import customtkinter as ctk
 from pytubefix import YouTube
 from utils.application import Application
@@ -7,6 +8,7 @@ from utils.config import Config
 from utils.utils import Utils
 from app.vidinfo import VidInfo
 
+#class for handeling app commands
 class AppCmd:
   def __init__(self):
     self.app = Application(
@@ -17,7 +19,8 @@ class AppCmd:
       info_clbck=self.open_info_window,
       set_dl_clbck=self.set_download_option,
       set_dl_single_clbck=self.set_single_download_option,
-      clear_mf_clbck=self.clear_main_frame)
+      clear_mf_clbck=self.clear_main_frame,
+      copy_video_url_clbck=self.copy_video_url)
     #Default window state
     self.settings_window = None
     self.info_window = None
@@ -75,6 +78,12 @@ class AppCmd:
         self.throw_progress_error(msg="Invalid URL")
         raise ValueError("Invalid url")
 
+  #For copying video url to clipboard, uses pyperclip libary
+  def copy_video_url(self, i:int)->None:
+    url:str = self.app.vid_queue[i]["url"]
+    copy(url)
+    self.create_dialog_notfication(f"Url copied to clipboard:\n{url}")
+     
   #For specifying download path
   def select_folder(self)->None:
     #open folder dialog

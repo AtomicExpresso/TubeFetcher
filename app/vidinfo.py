@@ -44,7 +44,8 @@ class VidInfo:
     self.vid_size_lbl.grid(column=1, row=3, pady=(10,10), padx=(10, 10), sticky="w")
 
     #info frame
-    self.vid_info_btn.grid(column=0, row=0, pady=(10,10), padx=(10, 10), sticky="w")
+    self.vid_copyurl_btn.grid(column=0, row=0, pady=(10,0), padx=(10, 10), sticky="w")
+    self.vid_info_btn.grid(column=0, row=1, pady=(10,10), padx=(10, 10), sticky="w")
 
   def create_vid_frames(self)->None:
     #--main vid frame
@@ -86,9 +87,21 @@ class VidInfo:
     #info frame
     infoImgSrc = Image.open("./images/info.png")
     self.infoImg = ctk.CTkImage(light_image=infoImgSrc, size=(20,20))
+    linkImgSrc = Image.open("./images/link.png")
+    self.linkImg = ctk.CTkImage(light_image=linkImgSrc, size=(20,20))
 
   def create_vid_btn(self)->None:
     #first row of info frame
+    self.vid_copyurl_btn = ctk.CTkButton(
+      self.vid_info_frame, 
+      image=self.linkImg, 
+      fg_color=f"{Config.secondary_color}", 
+      hover_color=f"{Config.btn_color}", 
+      text="", 
+      bg_color="transparent", 
+      width=45,
+      command=lambda: self.parent.copy_video_url_clbck(self.index))
+    #last row of info frame
     self.vid_info_btn = ctk.CTkButton(
       self.vid_info_frame, 
       image=self.infoImg, 

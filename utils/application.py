@@ -7,7 +7,7 @@ from utils.utils import Utils
 from utils.config import Config
 
 class Application(ctk.CTk):
-  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, info_clbck, set_dl_clbck, set_dl_single_clbck, clear_mf_clbck):
+  def __init__(self, download_btn_clbck, folder_path_clbck, add_vid_clbck, st_clbck, info_clbck, set_dl_clbck, set_dl_single_clbck, clear_mf_clbck, copy_video_url_clbck):
     super().__init__()
     self.geometry(f"{Config.primary_win_width}x{Config.primary_win_height}")
     self.title("TubeFetcher")
@@ -21,6 +21,7 @@ class Application(ctk.CTk):
     self.set_dl_option_clbck = set_dl_clbck #sets default resoultion and download type for all new videos
     self.set_dl_single_clbck = set_dl_single_clbck #Sets resoultion and download type for a single video
     self.clear_mf_clbck = clear_mf_clbck #Clear main frame
+    self.copy_video_url_clbck = copy_video_url_clbck #Copys video url to clipboard
 
     self.url = "" #url from input
     self.yt = None #pytube libary instance
