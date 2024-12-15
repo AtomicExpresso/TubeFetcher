@@ -46,7 +46,8 @@ class VidInfo:
 
     #info frame
     self.vid_copyurl_btn.grid(column=0, row=0, pady=(10,0), padx=(10, 10), sticky="w")
-    self.vid_info_btn.grid(column=0, row=1, pady=(10,10), padx=(10, 10), sticky="w")
+    self.vid_delete_btn.grid(column=0, row=1, pady=(10,0), padx=(10, 10), sticky="w")
+    self.vid_info_btn.grid(column=0, row=2, pady=(10,10), padx=(10, 10), sticky="w")
 
   def create_vid_frames(self)->None:
     #--main vid frame
@@ -90,6 +91,8 @@ class VidInfo:
     self.infoImg = ctk.CTkImage(light_image=infoImgSrc, size=(20,20))
     linkImgSrc = Image.open("./images/link.png")
     self.linkImg = ctk.CTkImage(light_image=linkImgSrc, size=(20,20))
+    trashImgSrc = Image.open("./images/trash.png")
+    self.trashImg = ctk.CTkImage(light_image=trashImgSrc, size=(20,20))
 
   def create_vid_btn(self)->None:
     #first row of info frame
@@ -102,6 +105,16 @@ class VidInfo:
       bg_color="transparent", 
       width=45,
       command=lambda: self.parent.copy_video_url_clbck(self.index))
+    #second row of info frame
+    self.vid_delete_btn = ctk.CTkButton(
+      self.vid_info_frame, 
+      image=self.trashImg, 
+      fg_color=f"{Config.secondary_color}", 
+      hover_color=f"{Config.btn_color}", 
+      text="", 
+      bg_color="transparent", 
+      width=45,
+      command=lambda: self.delete_video())
     #last row of info frame
     self.vid_info_btn = ctk.CTkButton(
       self.vid_info_frame, 
@@ -216,7 +229,7 @@ class VidInfo:
     self.vid_dl_progress.set(0)
     self.vid_dl_progress.update()
 
-    #Set progress bar progress
+  #Set progress bar progress
   def set_progress(self, stream, chunk, bytes_remaining)->None:
     total_size:str|int = stream.filesize
     bytes_downloaded:str|int = total_size - bytes_remaining
@@ -239,7 +252,7 @@ class VidInfo:
     self.vid_dl_progress.update()
     self.parent.vid_dl_count += 1 #update videos downloaded counter
 
-  #Handles error for video
+  #Handles errors for video
   def handle_error(self)->None:
     self.error = True
     self.vid_frame.configure(
@@ -254,6 +267,12 @@ class VidInfo:
         orientation="horizontal", 
         width=250
       )
+  
+  #delete the video frame and remove it from queue
+  def delete_video(self)->None:
+    self.parent.vid_frames.pop(self.index)
+    self.parent.vid_queue.pop(self.index)
+    self.vid_frame.destroy()
 
   #Adds video info to frame
   def append_vid_info(self)->None:
