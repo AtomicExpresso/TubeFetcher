@@ -14,7 +14,6 @@ Libaries used:
 """
 todo:
 -Fix btn bug with vid info frame
--Fix bug with delete button, it keeps messing with vid queue
 """
 #Run application
 def run():

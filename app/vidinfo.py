@@ -30,7 +30,7 @@ class VidInfo:
     self.vid_ct_frame.grid(column=1, row=0, padx=10, pady=10, sticky="n")
     self.vid_ct_opt_frame.grid(column=0, row=1, padx=10, pady=10, sticky="w")
     self.vid_info_frame.grid(column=2, row=0, padx=10, pady=10, sticky="e")
-    self.vid_frame.grid(row=[len(self.parent.vid_queue)+1], column=0, columnspan=3, padx=20, pady=5, sticky="nsew")
+    self.vid_frame.grid(row=[self.parent.frames.main_frame.grid_size()[1]], column=0, columnspan=3, padx=20, pady=5, sticky="nsew")
 
     #TN frame
     self.vid_thumbnail_lbl.grid(column=0, row=1, pady=0, padx=(20, 10), sticky="w")
@@ -271,11 +271,15 @@ class VidInfo:
   #delete the video frame and remove it from queue
   def delete_video(self)->None:
     if not self.parent.is_downloading:
-      self.parent.vid_frames.pop(self.index)
       self.parent.vid_queue.pop(self.index)
       self.vid_frame.destroy()
+      self.parent.update_new_queue_clbck()
     else:
       self.parent.dialog_notfi_clbck("Unable to delete video")
+
+  #Destorys widget
+  def destory_video_widgets(self)->None:
+    self.vid_frame.destroy()
 
   #Adds video info to frame
   def append_vid_info(self)->None:

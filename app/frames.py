@@ -20,11 +20,13 @@ class AppFrames:
     self.main_frame.grid_columnconfigure(1, weight=1)
     self.main_frame.grid_columnconfigure(2, weight=1)
 
-    self.progress_frame.grid_rowconfigure(0, weight=0)
-    self.progress_frame.grid_rowconfigure(1, weight=0)
+    #helps prevent python from throwing an error if we try to reconfigure the grid after progress frame has been destroyed
+    if self.progress_frame and self.progress_frame.winfo_exists():
+      self.progress_frame.grid_rowconfigure(0, weight=0)
+      self.progress_frame.grid_rowconfigure(1, weight=0)
 
-    self.progress_frame.grid_columnconfigure(0, weight=0)
-    self.progress_frame.grid_columnconfigure(1, weight=1)
+      self.progress_frame.grid_columnconfigure(0, weight=0)
+      self.progress_frame.grid_columnconfigure(1, weight=1)
 
     self.bottom_frame.grid_columnconfigure(0, weight=0)
     self.bottom_frame.grid_columnconfigure(1, weight=1)

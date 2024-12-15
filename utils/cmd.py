@@ -21,7 +21,8 @@ class AppCmd:
       set_dl_single_clbck=self.set_single_download_option,
       clear_mf_clbck=self.clear_main_frame,
       copy_video_url_clbck=self.copy_video_url,
-      dialog_notfi_clbck=self.create_dialog_notfication)
+      dialog_notfi_clbck=self.create_dialog_notfication,
+      update_new_queue_clbck=self.update_new_queue)
     #Default window state
     self.settings_window = None
     self.info_window = None
@@ -49,7 +50,7 @@ class AppCmd:
         dl_opt:str = Config.dl_cur_option
         size:str|int = "Pending" #file size
         stream = None #download stream
-        index:int = len(self.app.vid_queue)
+        index:int = self.app.frames.main_frame.grid_size()[1]
 
         self.app.vid_info = {
           "thumbnail": thumbnail, 
@@ -139,12 +140,12 @@ class AppCmd:
     else:
       try:
         self.destroy_progress_frame()
-        self.check_progress_frame()
 
         self.app.vid_info = {}
         self.app.vid_queue = []
         self.app.vid_frames = []
 
+        self.app.frames.main_frame.destroy()
         self.app.frames.create_main_frame()
         self.app.app_append.append_widgets()
         self.app.app_append.grid_config()
@@ -252,6 +253,33 @@ class AppCmd:
   def handle_dl_error(self, i:int)->None:
     vid_info_instance = self.app.vid_frames[i]
     vid_info_instance.handle_error()
+
+  #Updates queue when a video is deleted
+  def update_new_queue(self):
+    self.app.vid_frames = []
+
+    #recreate the vid frame
+    self.destroy_progress_frame()
+    
+    self.app.frames.main_frame.destroy()
+    self.app.frames.create_main_frame()
+    self.app.app_append.append_widgets()
+    self.app.app_append.grid_config()
+
+    #update video indexs
+    for video in self.app.vid_queue:
+      if video["index"] != 0:
+        video["index"] -= 1
+
+    #rebuild from vid queue
+    for video in self.app.vid_queue:
+      self.app.vid_info = video
+      # Create a new VidInfo instance for the current video
+      new_vid_info = VidInfo(parent=self.app)
+      new_vid_info.append_vid_info()
+      #append it to app parent
+      self.app.vid_frames.append(new_vid_info)
+      
 
   #Runs on download button click
   def download_btn(self)->None:
