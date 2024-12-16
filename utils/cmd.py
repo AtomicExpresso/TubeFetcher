@@ -2,7 +2,7 @@ from tkinter import messagebox
 from pyperclip import copy
 import customtkinter as ctk
 from pytubefix import YouTube
-from utils.application import Application
+from app.application import Application
 from utils.Window import SettingsWindow, InfoWindow
 from utils.config import Config
 from utils.utils import Utils
@@ -21,7 +21,6 @@ class AppCmd:
       set_dl_single_clbck=self.set_single_download_option,
       clear_mf_clbck=self.clear_main_frame,
       copy_video_url_clbck=self.copy_video_url,
-      dialog_notfi_clbck=self.create_dialog_notfication,
       update_new_queue_clbck=self.update_new_queue)
     #Default window state
     self.settings_window = None
@@ -30,7 +29,10 @@ class AppCmd:
   #For adding videos to main frame
   def add_video(self)->None:
     if self.app.is_downloading:
-      self.create_dialog_notfication("Cant add new videos because a download is in progress")
+      Utils.create_dialog_error_notification("Cant add new videos because a download is in progress")
+      pass
+    elif len(self.app.vid_queue) > 10: #limited for performence reasons...
+      Utils.create_dialog_error_notification("The video queue is full (limit: 10). Please download the current videos before adding more.")
       pass
     else:
       try:
@@ -78,14 +80,14 @@ class AppCmd:
         self.destroy_progress_frame()
       except:
         self.throw_progress_error(msg="Invalid URL")
-        self.create_dialog_notfication("Invalid video URL")
+        Utils.create_dialog_error_notification("Invalid video URL")
         raise ValueError("Invalid url")
 
   #For copying video url to clipboard, uses pyperclip libary
   def copy_video_url(self, i:int)->None:
     url:str = self.app.vid_queue[i]["url"]
     copy(url)
-    self.create_dialog_notfication(f"Url copied to clipboard:\n{url}")
+    Utils.create_dialog_notfication(f"Url copied to clipboard:\n{url}")
      
   #For specifying download path
   def select_folder(self)->None:
@@ -99,6 +101,7 @@ class AppCmd:
     except:
       self.app.widgets.error_txt.configure(text="Incorrect file path")
       self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))
+      Utils.create_dialog_error_notification("Unable to change file path, did you give the app permissions?")
       raise ValueError("Unable to change file path, did you give the app permissions?")
 
   #open the settings window
@@ -135,7 +138,7 @@ class AppCmd:
   #Clears videos from main frame
   def clear_main_frame(self)->None:
     if self.app.is_downloading:
-      self.create_dialog_notfication("Cant clear frame because a download is in progress")
+      Utils.create_dialog_notfication("Cant clear frame because a download is in progress")
       pass
     else:
       try:
@@ -150,6 +153,7 @@ class AppCmd:
         self.app.app_append.append_widgets()
         self.app.app_append.grid_config()
       except:
+        Utils.create_dialog_error_notification("An error occured while clearing widgets")
         raise ValueError("An error occured while clearing widgets")
 
   #reset feilds
@@ -189,12 +193,13 @@ class AppCmd:
       cur["size"] = Utils.calculate_file_size(cur)
     except:
       self.app.is_downloading = False
+      Utils.create_dialog_error_notification("An error occured while fetching video stream, is your internet connected?")
       raise ValueError("An error occured while fetching video stream, is your internet connected?")
 
   #Set single video download option
   def set_single_download_option(self, txt, i)->None:
     if self.app.is_downloading:
-      self.create_dialog_notfication("Cant change options because a download is in progress")
+      Utils.create_dialog_notfication("Cant change options because a download is in progress")
       pass
     else:
       cur = self.app.vid_queue[i]
@@ -230,19 +235,15 @@ class AppCmd:
       self.app.widgets.create_progress_widgets()
       self.app.app_append.append_progress_widgets()
       self.app.frames.grid_config()
-  #throw error
+  #throws an error if the download progress failed or was interupted
   def throw_progress_error(self, msg:str)->None:
     self.destroy_progress_frame() #preventing duplicates
     self.check_progress_frame()
 
     self.app.widgets.error_txt.configure(text=f"{msg}")
     self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(10, 0), padx=(0, 0))
-  
-  #used for warnings
-  def create_dialog_notfication(self, msg:str)->None:
-    messagebox.showinfo("Notification", f"{msg}")
 
-  #update info
+  #update info for a single video
   def update_single_video_info(self, i:int, new_info:dict)->None:
     vid_info_instance = self.app.vid_frames[i]
     vid_info_instance.update_vid_info(new_info)
@@ -287,7 +288,7 @@ class AppCmd:
   #Runs on download button click
   def download_btn(self)->None:
     if self.app.is_downloading:
-      self.create_dialog_notfication("Unable to download because a download is already in progress")
+      Utils.create_dialog_notfication("Unable to download because a download is already in progress")
       pass
 
     #Check if progress frame is missing
@@ -301,7 +302,7 @@ class AppCmd:
         #build progress bar for single video
         self.create_single_video_progress(i)
     except:
-      self.create_dialog_notfication("an error occured while building progress bars")
+      Utils.create_dialog_error_notification("an error occured while building progress bars")
       raise ValueError("an error occured while building progress bars")
     try:
       #bottom progress frame

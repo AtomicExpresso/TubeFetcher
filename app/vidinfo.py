@@ -288,7 +288,7 @@ class VidInfo:
       self.vid_frame.destroy()
       self.parent.update_new_queue_clbck()
     else:
-      self.parent.dialog_notfi_clbck("Unable to delete video")
+      Utils.create_dialog_error_notification("Unable to delete video")
 
   #Destorys widget
   def destory_video_widgets(self)->None:

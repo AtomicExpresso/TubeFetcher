@@ -1,4 +1,5 @@
 from utils.config import Config
+from tkinter import messagebox
 import json
 
 #Used for general utility commands, such as calculating time, file size, etc.
@@ -53,6 +54,15 @@ class Utils:
         Config.theme_cur_option = data['theme']
     except:
       self.save_settings_data()
+
+  #used for dialog notifications
+  @classmethod
+  def create_dialog_notfication(self, msg:str)->None:
+    messagebox.showinfo("Notification", f"{msg}")
+  #used for dialog error notifications
+  @classmethod
+  def create_dialog_error_notification(self, msg: str) -> None:
+    messagebox.showerror("Error", msg)
   
   #Set theme
   @classmethod
@@ -64,4 +74,5 @@ class Utils:
       if Config.theme_cur_option in themes:
         Config.theme = themes[Config.theme_cur_option]
     except:
+      self.create_dialog_error_notification("A fatal error occured while changing the theme, was the theme.json file modified?")
       raise ValueError("A fatal error occured while changing the theme, was the theme.json file modified?")
