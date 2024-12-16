@@ -127,7 +127,7 @@ class AppCmd:
   #Runs after all videos has been completed
   def set_complete(self)->None:
     #update progress text
-    self.app.widgets.download_progress_txt.configure(text=f"Complete!",text_color=f"{Config.success_txt_color}")
+    self.app.widgets.download_progress_txt.configure(text=f"Complete!",text_color=f"{Config.theme["colors"]["progress"]}")
     self.app.widgets.download_progress_bar.set(100)
     self.app.widgets.download_progress_bar.update()
     self.app.is_downloading = False
@@ -158,15 +158,16 @@ class AppCmd:
     self.app.widgets.error_txt.configure(text="")
     self.app.widgets.download_progress_bar.set(0)
 
-  #set download option
+  #set options
   def set_download_option(self, txt)->None:
     if txt in Config.dl_options:
       Config.dl_cur_option = txt
-      self.set_settings_values()
     elif txt in Config.res_options:
       Config.res_cur_option = txt
-      self.set_settings_values()
-      
+    elif txt in Config.theme_options:
+      Config.theme_cur_option = txt
+      Utils.load_theme()
+    self.set_settings_values()
     Utils.save_settings_data()
   #Check resoultion
   def check_vid_resoultion(self, i)->None:
@@ -209,11 +210,13 @@ class AppCmd:
   #Sets app widgets to the values in config
   def set_settings_values(self)->None:
     self.app.widgets.options.set(Config.dl_cur_option)
+    Utils.load_theme()
 
     #Apply config values to settings if setting window exists
     if self.settings_window and self.settings_window.winfo_exists():
       self.settings_window.opt.set(Config.dl_cur_option)
       self.settings_window.res_opt.set(Config.res_cur_option)
+      self.settings_window.theme_opt.set(Config.theme_cur_option)
 
   #used for deleting progress frame
   def destroy_progress_frame(self)->None:

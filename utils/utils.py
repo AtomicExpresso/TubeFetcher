@@ -31,7 +31,8 @@ class Utils:
   def save_settings_data()->None:
     data = {
       "res_type": Config.res_cur_option,
-      "dl_type": Config.dl_cur_option
+      "dl_type": Config.dl_cur_option,
+      "theme": Config.theme_cur_option
     }
 
     with open("./settings/settings.json", "w") as file:
@@ -48,5 +49,19 @@ class Utils:
         Config.dl_cur_option = data['dl_type']
       if data['res_type'] in Config.res_options:
         Config.res_cur_option = data['res_type']
+      if data['theme'] in Config.theme_options:
+        Config.theme_cur_option = data['theme']
     except:
       self.save_settings_data()
+  
+  #Set theme
+  @classmethod
+  def load_theme(self)->None:
+    try:
+      with open("./settings/themes.json", "r") as file:
+        themes = json.load(file)
+      
+      if Config.theme_cur_option in themes:
+        Config.theme = themes[Config.theme_cur_option]
+    except:
+      raise ValueError("A fatal error occured while changing the theme, was the theme.json file modified?")

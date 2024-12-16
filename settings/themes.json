@@ -1,0 +1,62 @@
+{
+  "Dark": {
+    "colors": {
+        "primary": "#1f1f1f",
+        "secondary": "#282828",
+        "button": {
+            "default": "#363535",
+            "hover": "#403f3f",
+            "download": {
+                "default": "#4ea94b",
+                "hover": "#2d6e2b"
+            }
+        },
+        "progress": "#4ea94b",
+        "error": "#eb4034"
+    },
+    "text_colors": {
+        "success": "#4ea94b",
+        "primary": "#ffffff"
+    }
+  },
+  "Midnight": {
+    "colors": {
+        "primary": "#0d1117",
+        "secondary": "#161b22",
+        "button": {
+            "default": "#21262d",
+            "hover": "#30363d",
+            "download": {
+                "default": "#238636",
+                "hover": "#2ea043"
+            }
+        },
+        "progress": "#238636",
+        "error": "#f85149"
+    },
+    "text_colors": {
+        "success": "#2ea043",
+        "primary": "#c9d1d9"
+    }
+  },
+  "Blue": {
+    "colors": {
+        "primary": "#1b263b",
+        "secondary": "#2c3e50",
+        "button": {
+            "default": "#3b5998",
+            "hover": "#4a69bd",
+            "download": {
+                "default": "#3498db",
+                "hover": "#2980b9"
+            }
+        },
+        "progress": "#3498db",
+        "error": "#e74c3c"
+    },
+    "text_colors": {
+        "success": "#2ecc71",
+        "primary": "#ecf0f1"
+    }
+    }
+}

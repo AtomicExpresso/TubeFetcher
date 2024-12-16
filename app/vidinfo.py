@@ -53,23 +53,23 @@ class VidInfo:
     #--main vid frame
     self.vid_frame = ctk.CTkFrame(
       self.parent.frames.main_frame,
-      fg_color=f"{Config.primary_color}")
+      fg_color=f"{Config.theme["colors"]["primary"]}")
     #--thumbnail frame
     self.vid_tn_frame = ctk.CTkFrame(
       self.vid_frame, 
-      fg_color=f"{Config.primary_color}")
+      fg_color=f"{Config.theme["colors"]["primary"]}")
     #--content frame
     self.vid_ct_frame = ctk.CTkFrame(
       self.vid_frame, 
-      fg_color=f"{Config.primary_color}")
+      fg_color=f"{Config.theme["colors"]["primary"]}")
     #--option-ct-frame (goes in ct frame)
     self.vid_ct_opt_frame = ctk.CTkFrame(
       self.vid_ct_frame, 
-      fg_color=f"{Config.primary_color}")
+      fg_color=f"{Config.theme["colors"]["primary"]}")
     #--info frame
     self.vid_info_frame = ctk.CTkFrame(
       self.vid_frame, 
-      fg_color=f"{Config.primary_color}")
+      fg_color=f"{Config.theme["colors"]["primary"]}")
     
   def create_vid_labels(self)->None:
     #top row of CT frame
@@ -80,11 +80,11 @@ class VidInfo:
     #bottom row of CT frame
     self.vid_duriation_lbl = ctk.CTkLabel(
       self.vid_ct_opt_frame,
-      text_color=Config.primary_txt_color, 
+      text_color=Config.theme["text_colors"]["primary"], 
       text=f"Duriation: {self.info["duriation"]}")
     self.vid_size_lbl = ctk.CTkLabel(
       self.vid_ct_opt_frame,
-      text_color=Config.primary_txt_color, 
+      text_color=Config.theme["text_colors"]["primary"], 
       text=f"Size: {self.info["size"]}")
   
   def create_vid_images(self)->None:
@@ -101,8 +101,8 @@ class VidInfo:
     self.vid_info_btn = ctk.CTkButton(
       self.vid_info_frame, 
       image=self.infoImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
       text="", 
       bg_color="transparent", 
       width=45,
@@ -111,8 +111,8 @@ class VidInfo:
     self.vid_copyurl_btn = ctk.CTkButton(
       self.vid_info_frame, 
       image=self.linkImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
       text="", 
       bg_color="transparent", 
       width=45,
@@ -121,8 +121,8 @@ class VidInfo:
     self.vid_delete_btn = ctk.CTkButton(
       self.vid_info_frame, 
       image=self.trashImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
       text="", 
       bg_color="transparent", 
       width=45,
@@ -131,24 +131,24 @@ class VidInfo:
   def create_vid_options(self)->None:
     self.vid_dl_option = ctk.CTkOptionMenu(
       self.vid_ct_opt_frame, 
-      fg_color=f"{Config.secondary_color}", 
-      bg_color=f"{Config.secondary_color}",
-      dropdown_fg_color=f"{Config.btn_color}",
-      dropdown_text_color=f"{Config.primary_txt_color}",
-      dropdown_hover_color=f"{Config.primary_color}",
-      button_color=f"{Config.btn_color_hover}", 
-      button_hover_color=f"{Config.btn_color_hover}",
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      bg_color=f"{Config.theme["colors"]["secondary"]}",
+      dropdown_fg_color=f"{Config.theme["colors"]["button"]["default"]}",
+      dropdown_text_color=f"{Config.theme["text_colors"]["primary"]}",
+      dropdown_hover_color=f"{Config.theme["colors"]["primary"]}",
+      button_color=f"{Config.theme["colors"]["button"]["hover"]}", 
+      button_hover_color=f"{Config.theme["colors"]["button"]["hover"]}",
       values=[*Config.dl_options], 
       command=lambda cur_val: self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     self.vid_res_option = ctk.CTkOptionMenu(
       self.vid_ct_opt_frame, 
-      fg_color=f"{Config.secondary_color}", 
-      bg_color=f"{Config.secondary_color}",
-      dropdown_fg_color=f"{Config.btn_color}",
-      dropdown_text_color=f"{Config.primary_txt_color}",
-      dropdown_hover_color=f"{Config.primary_color}",
-      button_color=f"{Config.btn_color_hover}", 
-      button_hover_color=f"{Config.btn_color_hover}",
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      bg_color=f"{Config.theme["colors"]["secondary"]}",
+      dropdown_fg_color=f"{Config.theme["colors"]["button"]["default"]}",
+      dropdown_text_color=f"{Config.theme["text_colors"]["primary"]}",
+      dropdown_hover_color=f"{Config.theme["colors"]["primary"]}",
+      button_color=f"{Config.theme["colors"]["button"]["hover"]}", 
+      button_hover_color=f"{Config.theme["colors"]["button"]["hover"]}",
       values=[*Config.res_options],
       command=lambda cur_val:self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     #Set vid option values to the ones selected
@@ -195,13 +195,13 @@ class VidInfo:
       self.vid_title_lbl = ctk.CTkLabel(
         self.vid_ct_frame, 
         text=f"{self.info["title"]}",
-        text_color=Config.primary_txt_color, 
+        text_color=Config.theme["text_colors"]["primary"], 
         font=('ariel', 13, BOLD))
     else:
       self.vid_title_lbl = ctk.CTkLabel(
         self.vid_ct_frame, 
         text=f"{self.info["title"][:55]}...",
-        text_color=Config.primary_txt_color, 
+        text_color=Config.theme["text_colors"]["primary"], 
         font=('ariel', 13, BOLD))
 
   def update_vid_info(self, new_info: dict)->None:
@@ -226,14 +226,14 @@ class VidInfo:
     #create progress bar
     self.vid_dl_progress = ctk.CTkProgressBar(
         self.vid_ct_opt_frame, 
-        progress_color=f"{Config.progress_color}", 
+        progress_color=f"{Config.theme["colors"]["progress"]}", 
         orientation="horizontal", 
         width=250
       )
     self.vid_dl_progress_txt = ctk.CTkLabel(
         self.vid_ct_opt_frame, 
         text="0%",
-        text_color=Config.primary_txt_color, 
+        text_color=Config.theme["text_colors"]["primary"], 
         fg_color="transparent", 
         font=("ariel", 15))
     self.vid_dl_progress_txt.grid(column=0, row=1, padx=(10, 10), sticky="w")
@@ -260,7 +260,7 @@ class VidInfo:
     #update progress text
     self.vid_dl_progress_txt.configure(
       text=f"Complete!",
-      text_color=f"{Config.success_txt_color}")
+      text_color=f"{Config.theme["colors"]["progress"]}")
     self.vid_dl_progress.set(100)
     self.vid_dl_progress.update()
     self.parent.vid_dl_count += 1 #update videos downloaded counter
@@ -269,14 +269,14 @@ class VidInfo:
   def handle_error(self)->None:
     self.error = True
     self.vid_frame.configure(
-      border_color=f"{Config.error_txt_color}", 
+      border_color=f"{Config.theme["colors"]["error"]}", 
       border_width=2)
     self.vid_dl_progress_txt.configure(
       text=f"Error",
-      text_color=f"{Config.error_txt_color}")
+      text_color=f"{Config.theme["colors"]["error"]}")
     self.vid_dl_progress.configure(
         self.vid_ct_opt_frame, 
-        progress_color=f"{Config.error_txt_color}", 
+        progress_color=f"{Config.theme["colors"]["error"]}", 
         orientation="horizontal", 
         width=250
       )

@@ -37,27 +37,27 @@ class AppFrames:
     self.main_frame = ctk.CTkScrollableFrame(
       self.parent, 
       corner_radius=0, 
-      fg_color=f"{Config.btn_color}",
-      scrollbar_button_color=f"{Config.primary_color}",
-      scrollbar_button_hover_color=f"{Config.secondary_color}")
+      fg_color=f"{Config.theme["colors"]["button"]["default"]}",
+      scrollbar_button_color=f"{Config.theme["colors"]["primary"]}",
+      scrollbar_button_hover_color=f"{Config.theme["colors"]["secondary"]}")
   def create_top_frame(self)->None:
     self.top_frame = ctk.CTkFrame(
       self.parent, 
-      fg_color=f"{Config.primary_color}",
-      bg_color=f"{Config.primary_color}", 
+      fg_color=f"{Config.theme["colors"]["primary"]}",
+      bg_color=f"{Config.theme["colors"]["primary"]}", 
       corner_radius=0)
   def create_progress_frame(self)->None:
     self.progress_frame = ctk.CTkFrame(
       self.parent,
-      bg_color=f"{Config.primary_color}",
+      bg_color=f"{Config.theme["colors"]["primary"]}",
       fg_color="transparent",
       height=30, 
       corner_radius=0)
   def create_bottom_frame(self)->None:
     self.bottom_frame = ctk.CTkFrame(
       self.parent, 
-      fg_color=f"{Config.primary_color}",
-      bg_color=f"{Config.primary_color}",
+      fg_color=f"{Config.theme["colors"]["primary"]}",
+      bg_color=f"{Config.theme["colors"]["primary"]}",
       corner_radius=0)
 
   def create_frames(self)->None:

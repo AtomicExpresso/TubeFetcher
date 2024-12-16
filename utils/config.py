@@ -1,26 +1,33 @@
 #Config class is global state
 class Config:
   #-Theme
-  primary_color:str = f"#1f1f1f"
-  secondary_color:str = f"#282828"
-  btn_color:str = f"#363535"
-  btn_color_hover:str = f"#403f3f"
-  btn_color_download:str = f"#4ea94b"
-  progress_color:str = f"#4ea94b"
-
-  #-Error Colors
-  error_txt_color:str = f"#eb4034"
-
-  #-Text Colors
-  success_txt_color:str = f"#4ea94b"
-  primary_txt_color:str = f"#ffffff"
+  theme = {
+    "colors": {
+        "primary": "#1f1f1f",
+        "secondary": "#282828",
+        "button": {
+            "default": "#363535",
+            "hover": "#403f3f",
+            "download": {
+                "default": "#4ea94b",
+                "hover": "#2d6e2b"
+            }
+        },
+        "progress": "#4ea94b",
+        "error": "#eb4034"
+    },
+    "text_colors": {
+        "success": "#4ea94b",
+        "primary": "#ffffff"
+    }
+  }
 
   #-Window size
   primary_win_width:int = 500
   primary_win_height:int = 350
 
-  secondary_win_width:int = 300
-  secondary_win_height:int = 200
+  secondary_win_width:int = 400
+  secondary_win_height:int = 300
 
   #-max text length
   max_paragraph_len:int = 500
@@ -28,9 +35,11 @@ class Config:
   #-Options
   dl_options:list[str] = ["Video + Audio", "Audio"]
   res_options:list[str] = ["1080p", "720p", "360p"]
+  theme_options:list[str] = ["Dark", "Midnight", "Blue"]
 
   #-Current settings
   dl_cur_option:str = dl_options[0]
   res_cur_option:str = res_options[0]
+  theme_cur_option:str = theme_options[0]
 
   folder_path:str = "./downloads" #downloaded vids go here

@@ -35,6 +35,9 @@ class Application(ctk.CTk):
 
     self.vid_frames:list = [] #list of pointers/references to vid frames
 
+    Utils.load_settings_data()
+    Utils.load_theme()
+
     self.frames = AppFrames(parent=self)
     self.widgets = AppWidgets(parent=self)
     self.vid_frame = VidInfo(parent=self)
@@ -43,8 +46,6 @@ class Application(ctk.CTk):
     self.frames.create_frames()
     self.widgets.create_images()
     self.widgets.create_widgets()
-
-    Utils.load_settings_data()
 
     self.app_append.grid_config()
     self.app_append.append_widgets()

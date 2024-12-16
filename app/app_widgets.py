@@ -24,21 +24,21 @@ class AppWidgets:
     self.download_progress_txt = ctk.CTkLabel(
       self.parent.frames.progress_frame, 
       text="0%", 
-      text_color=Config.primary_txt_color,
-      fg_color=Config.primary_color, 
+      text_color=Config.theme["text_colors"]["primary"],
+      fg_color=Config.theme["colors"]["primary"], 
       font=("ariel", 20))
     self.error_txt = ctk.CTkLabel(
       self.parent.frames.progress_frame, 
-      text_color=f"{Config.error_txt_color}", 
+      text_color=f"{Config.theme["colors"]["error"]}", 
       text="Error", 
       fg_color="transparent", 
       font=("ariel", 20))
     #progress bar
     self.download_progress_bar = ctk.CTkProgressBar(
       self.parent.frames.progress_frame, 
-      progress_color=f"{Config.progress_color}",
-      fg_color=Config.primary_color,
-      bg_color=Config.primary_color, 
+      progress_color=f"{Config.theme["colors"]["progress"]}",
+      fg_color=Config.theme["colors"]["primary"],
+      bg_color=Config.theme["colors"]["primary"], 
       orientation="horizontal", 
       width=250)
     
@@ -50,15 +50,15 @@ class AppWidgets:
       border_width=0, 
       height=30, 
       corner_radius=0,
-      fg_color=Config.btn_color,
-      text_color=Config.primary_txt_color, 
+      fg_color=Config.theme["colors"]["button"]["default"],
+      text_color=Config.theme["text_colors"]["primary"], 
       placeholder_text="Video URL")
     #Add videos to que button
     self.addvideo_btn = ctk.CTkButton(
       self.parent.frames.top_frame, 
       image=self.plusImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
       text="", 
       bg_color="transparent", 
       corner_radius=0, 
@@ -68,8 +68,8 @@ class AppWidgets:
     self.settings_btn = ctk.CTkButton(
       self.parent.frames.top_frame, 
       image=self.settingsImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
       text="", 
       width=45, 
       command=self.parent.st_clbck)
@@ -79,26 +79,26 @@ class AppWidgets:
     self.download_button = ctk.CTkButton(
       self.parent.frames.bottom_frame, 
       text="Download", 
-      fg_color=f"{Config.btn_color_download}", 
-      hover_color="#2d6e2b", 
+      fg_color=f"{Config.theme["colors"]["button"]["download"]["default"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["download"]["hover"]}", 
       command=self.parent.download_btn_clbck)
     #App download option
     self.options = ctk.CTkOptionMenu(
       self.parent.frames.bottom_frame, 
-      fg_color=f"{Config.secondary_color}", 
-      bg_color=f"{Config.secondary_color}",
-      dropdown_fg_color=f"{Config.btn_color}",
-      dropdown_text_color=f"{Config.primary_txt_color}",
-      dropdown_hover_color=f"{Config.primary_color}",
-      button_color=f"{Config.btn_color_hover}", 
-      button_hover_color=f"{Config.btn_color_hover}",
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      bg_color=f"{Config.theme["colors"]["secondary"]}",
+      dropdown_fg_color=f"{Config.theme["colors"]["button"]["default"]}",
+      dropdown_text_color=f"{Config.theme["text_colors"]["primary"]}",
+      dropdown_hover_color=f"{Config.theme["colors"]["primary"]}",
+      button_color=f"{Config.theme["colors"]["button"]["hover"]}", 
+      button_hover_color=f"{Config.theme["colors"]["button"]["hover"]}",
       values=[*Config.dl_options], 
       command=self.parent.set_dl_option_clbck)
     #Folder button for file path
     self.folder_btn = ctk.CTkButton(
       self.parent.frames.bottom_frame, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
       image=self.folderImg, 
       text="", 
       width=45, 
@@ -107,8 +107,8 @@ class AppWidgets:
     self.trash_btn = ctk.CTkButton(
       self.parent.frames.bottom_frame, 
       image=self.trashImg, 
-      fg_color=f"{Config.secondary_color}", 
-      hover_color=f"{Config.btn_color}", 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
       text="", 
       width=45,
       command=self.parent.clear_mf_clbck)
