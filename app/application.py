@@ -24,6 +24,7 @@ class Application(ctk.CTk):
         super().__init__()
         self.geometry(f"{Config.primary_win_width}x{Config.primary_win_height}")
         self.title("TubeFetcher")
+        self.iconbitmap("./images/app-logo.ico")
 
         # setup callback functions
         self.download_btn_clbck = (
