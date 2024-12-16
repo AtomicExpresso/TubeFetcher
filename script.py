@@ -11,6 +11,11 @@ Libaries used:
 -Pytube
 """
 
+"""
+todo:
+-if possible, add hotreload to theme
+"""
+
 #Run application
 def run():
   customtkinter.set_appearance_mode("System")

@@ -1,3 +1,5 @@
+import os
+
 #Config class is global state
 class Config:
   #-Theme
@@ -41,5 +43,5 @@ class Config:
   dl_cur_option:str = dl_options[0]
   res_cur_option:str = res_options[0]
   theme_cur_option:str = theme_options[0]
-
-  folder_path:str = "./downloads" #downloaded vids go here
+  #Downloaded content goes here
+  folder_path:str = os.path.join(os.path.expanduser("~"), "Downloads")

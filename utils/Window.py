@@ -1,6 +1,7 @@
 from tkinter.font import BOLD
 import customtkinter as ctk
 from utils.config import Config
+from utils.utils import Utils
 
 #handles popups
 class Window(ctk.CTkToplevel):
@@ -20,6 +21,9 @@ class SettingsWindow(Window):
   def create_widgets(self):
     self.settings_frame = ctk.CTkFrame(
       self, 
+      fg_color=f"{Config.theme["colors"]["primary"]}")
+    self.settings_fp_frame = ctk.CTkFrame(
+      self.settings_frame, 
       fg_color=f"{Config.theme["colors"]["primary"]}")
 
     self.defLbl = ctk.CTkLabel(
@@ -59,6 +63,25 @@ class SettingsWindow(Window):
       button_hover_color=f"{Config.theme["colors"]["button"]["hover"]}", 
       values=[*Config.res_options],
       command=self.parent.set_dl_option_clbck)
+    #file path
+    self.fpLbl = ctk.CTkLabel(
+      self.settings_fp_frame,
+      text_color=Config.theme["text_colors"]["primary"], 
+      text="Downloads folder:")
+    self.fpBtn = ctk.CTkButton(
+      self.settings_fp_frame, 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
+      text="Change", 
+      width=45, 
+      command=self.parent.folder_path_clbck)
+    self.viewFpBtn = ctk.CTkButton(
+      self.settings_fp_frame, 
+      fg_color=f"{Config.theme["colors"]["secondary"]}", 
+      hover_color=f"{Config.theme["colors"]["button"]["default"]}", 
+      text="View", 
+      width=45, 
+      command=lambda: Utils.create_dialog_notfication(f"Current download folder:\n{Config.folder_path}"))
     #-Appearance
     self.appearanceLbl = ctk.CTkLabel(
       self.settings_frame, 
@@ -92,6 +115,7 @@ class SettingsWindow(Window):
     self.settings_frame.grid_rowconfigure(3, weight=0)
     self.settings_frame.grid_rowconfigure(4, weight=0)
     self.settings_frame.grid_rowconfigure(5, weight=0)
+    self.settings_frame.grid_rowconfigure(6, weight=0)
 
   def append_grid(self):
     self.settings_frame.grid(row=0, columnspan=3, column=0, sticky="nsew")
@@ -103,10 +127,15 @@ class SettingsWindow(Window):
 
     self.dowLbl.grid(row=3, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
     self.opt.grid(row=3, column=1, padx=(10, 10), pady=(10, 10), sticky="w")
+    
+    self.settings_fp_frame.grid(row=4, columnspan=3, column=0, sticky="nsew")
+    self.fpLbl.grid(row=0, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.fpBtn.grid(row=0, column=1, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.viewFpBtn.grid(row=0, column=2, padx=(10, 0), pady=(0, 0), sticky="w")
     #Apperance
-    self.appearanceLbl.grid(row=4, column=0, columnspan=3, padx=(10, 0), pady=(20, 0), sticky="w")
-    self.themeLbl.grid(row=5, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
-    self.theme_opt.grid(row=5, column=1, padx=(10, 10), pady=(10, 10), sticky="w")
+    self.appearanceLbl.grid(row=5, column=0, columnspan=3, padx=(10, 0), pady=(20, 0), sticky="w")
+    self.themeLbl.grid(row=6, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
+    self.theme_opt.grid(row=6, column=1, padx=(10, 10), pady=(10, 10), sticky="w")
 
 class InfoWindow(Window):
   def __init__(self, parent, index:int):
