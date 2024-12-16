@@ -8,7 +8,8 @@ import sys
 # Used for general utility commands, such as calculating time, file size, etc.
 class Utils:
     #Gets abs file path for files, so it will compile correctly
-    def get_resource_path(relative_path: str):
+    @classmethod
+    def get_resource_path(cls, relative_path: str):
         if getattr(sys, 'frozen', False):
             # Running in a bundled app
             app_path = sys._MEIPASS
@@ -44,23 +45,28 @@ class Utils:
 
     # Save settings data
     @classmethod
-    def save_settings_data(self) -> None:
+    def save_settings_data(cls) -> None:
         data = {
             "res_type": Config.res_cur_option,
             "dl_type": Config.dl_cur_option,
             "folder_path": Config.folder_path,
             "theme": Config.theme_cur_option,
         }
-        settings_path = self.get_resource_path("settings/settings.json")
+        # Ensure the directory exists
+        settings_dir = os.path.join(os.getenv('APPDATA'), "tubefetcher", "settings")
+        os.makedirs(settings_dir, exist_ok=True)
+
+        settings_path = os.path.join(settings_dir, "settings.json")
         with open(settings_path, "w") as file:
             json.dump(data, file)
 
     # Fetch save data
     @classmethod
-    def load_settings_data(self) -> None:
+    def load_settings_data(cls) -> None:
         try:
-            self.save_settings_data()
-            settings_path = self.get_resource_path("settings/settings.json")
+            # Read from the settings directory in APPDATA
+            settings_path = os.path.join(os.getenv('APPDATA'), "tubefetcher", "settings", "settings.json")
+
             with open(settings_path, "r") as file:
                 data = json.load(file)
 
@@ -73,31 +79,31 @@ class Utils:
             if data["folder_path"]:
                 print(Config.folder_path)
                 Config.folder_path = data["folder_path"]
-        except:
-            self.save_settings_data()
+        except FileNotFoundError:
+            cls.save_settings_data()  # Create default settings if file is not found
 
     # used for dialog notifications
     @classmethod
-    def create_dialog_notfication(self, msg: str) -> None:
+    def create_dialog_notfication(cls, msg: str) -> None:
         messagebox.showinfo("Notification", f"{msg}")
 
     # used for dialog error notifications
     @classmethod
-    def create_dialog_error_notification(self, msg: str) -> None:
+    def create_dialog_error_notification(cls, msg: str) -> None:
         messagebox.showerror("Error", msg)
 
     # Set theme
     @classmethod
-    def load_theme(self) -> None:
+    def load_theme(cls) -> None:
         try:
-            themes_path = self.get_resource_path("settings/themes.json")
+            themes_path = cls.get_resource_path("settings/themes.json")
             with open(themes_path, "r") as file:
                 themes = json.load(file)
 
             if Config.theme_cur_option in themes:
                 Config.theme = themes[Config.theme_cur_option]
         except:
-            self.create_dialog_error_notification(
+            cls.create_dialog_error_notification(
                 "A fatal error occured while changing the theme, was the theme.json file modified?"
             )
             raise ValueError(
