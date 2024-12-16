@@ -15,18 +15,15 @@ Libraries Used:
   - json
 """
 
-"""
-todo:
--if possible, add hotreload to theme
-"""
 
-#Run application
+# Run application
 def run():
-  customtkinter.set_appearance_mode("System")
-  customtkinter.set_default_color_theme("blue")
+    customtkinter.set_appearance_mode("System")
+    customtkinter.set_default_color_theme("blue")
 
-  program = AppCmd()
+    program = AppCmd()
 
-  program.run()
+    program.run()
+
 
 run()
