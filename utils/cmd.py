@@ -31,7 +31,7 @@ class AppCmd:
     if self.app.is_downloading:
       Utils.create_dialog_error_notification("Cant add new videos because a download is in progress")
       pass
-    elif len(self.app.vid_queue) > 10: #limited for performence reasons...
+    elif len(self.app.vid_queue) >= 10: #limited for performence reasons...
       Utils.create_dialog_error_notification("The video queue is full (limit: 10). Please download the current videos before adding more.")
       pass
     else:
@@ -97,7 +97,8 @@ class AppCmd:
 
       if folder_selected:
         Config.folder_path = folder_selected
-        messagebox.showinfo("File path updated", f"Download folder is now, {folder_selected}")
+        messagebox.showinfo("File path updated", f"Download folder is now:\n {folder_selected}")
+        Utils.save_settings_data()
     except:
       self.app.widgets.error_txt.configure(text="Incorrect file path")
       self.app.widgets.error_txt.grid(row=0, column=0, columnspan=2, pady=(120, 0), padx=(0, 0))

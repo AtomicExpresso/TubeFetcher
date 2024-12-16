@@ -54,6 +54,7 @@ class Utils:
       if data['theme'] in Config.theme_options:
         Config.theme_cur_option = data['theme']
       if data['folder_path']:
+        print(Config.folder_path)
         Config.folder_path = data['folder_path']
     except:
       self.save_settings_data()
