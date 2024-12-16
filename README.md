@@ -23,6 +23,7 @@ TubeFetcher is a customizable Python-based GUI application that makes it easy to
 
 ## Download
 You can download the latest version of the application from the [Releases page](https://github.com/atomicexpresso/TubeFetcher/releases).
+
 Note: The app may take a couple of minutes to load the first time you run it.
 
 ## Building from source
