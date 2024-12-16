@@ -21,6 +21,9 @@ TubeFetcher is a customizable Python-based GUI application that makes it easy to
 3. Once ready, click the "Download" button.
 4. Wait for the videos to finish downloading. All files will appear at the specified file path.
 
+## Download
+You can download the latest version of the app from the [Releases page](https://github.com/atomicexpresso/TubeFetcher/releases).
+
 ## Building from source
 If you'd like to download and compile the application yourself, follow these steps:
 
