@@ -7,8 +7,8 @@ TubeFetcher is a customizable Python-based GUI application that makes it easy to
 
 ## Features
 - Video queue: Add multiple videos to a list for sequential downloading.
-- Video & Audio support: Download content in video or audio format.
-- Multiple Resoultions: Choose from 1080p, 720p, or 360p. If a specified resolution isn't available, the best alternative will be used.
+- Video & Audio: Download content in video or audio format.
+- Multiple Resolutions: Choose from 1080p, 720p, or 360p. If a specified resolution isn't available, the best alternative will be used.
 - Themes: Customize the app’s appearance with a variety of themes.
 - Settings Menu: Customize default resolution, download type, file path and more.
 - Save System: Automatically saves your preferences.
@@ -22,7 +22,7 @@ TubeFetcher is a customizable Python-based GUI application that makes it easy to
 4. Wait for the videos to finish downloading. All files will appear at the specified file path.
 
 ## Download
-You can download the latest version of the app from the [Releases page](https://github.com/atomicexpresso/TubeFetcher/releases).
+You can download the latest version of the application from the [Releases page](https://github.com/atomicexpresso/TubeFetcher/releases).
 
 ## Building from source
 If you'd like to download and compile the application yourself, follow these steps:
@@ -46,8 +46,8 @@ If you'd like to download and compile the application yourself, follow these ste
 - Pillow
 - Pyperclip
 - Requests
-- Json
 - Pytube
+- PyInstaller
 
 ## License
 This repository is intended for educational and archival purposes only. TubeFetcher and its contributors are not responsible for any misuse of this software.
