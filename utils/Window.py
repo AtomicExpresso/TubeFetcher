@@ -24,19 +24,26 @@ class SettingsWindow(Window):
 
     self.defLbl = ctk.CTkLabel(
       self.settings_frame, 
-      text="General", 
+      text="General",
+      text_color=Config.primary_txt_color, 
       font=('ariel', 20, BOLD))
     self.resLbl = ctk.CTkLabel(
-      self.settings_frame, 
+      self.settings_frame,
+      text_color=Config.primary_txt_color, 
       text="Resolution:")
     self.dowLbl = ctk.CTkLabel(
-      self.settings_frame, 
+      self.settings_frame,
+      text_color=Config.primary_txt_color, 
       text="Download Type:")
     #Download options menu, inherits from config
     self.opt = ctk.CTkOptionMenu(
       self.settings_frame, 
       fg_color=f"{Config.secondary_color}", 
-      button_color=f"{Config.btn_color}", 
+      bg_color=f"{Config.secondary_color}",
+      dropdown_fg_color=f"{Config.btn_color}",
+      dropdown_text_color=f"{Config.primary_txt_color}",
+      dropdown_hover_color=f"{Config.primary_color}",
+      button_color=f"{Config.btn_color_hover}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.dl_options],
       command=self.parent.set_dl_option_clbck)
@@ -44,17 +51,14 @@ class SettingsWindow(Window):
     self.res_opt = ctk.CTkOptionMenu(
       self.settings_frame, 
       fg_color=f"{Config.secondary_color}", 
-      button_color=f"{Config.btn_color}", 
+      bg_color=f"{Config.secondary_color}",
+      dropdown_fg_color=f"{Config.btn_color}",
+      dropdown_text_color=f"{Config.primary_txt_color}",
+      dropdown_hover_color=f"{Config.primary_color}",
+      button_color=f"{Config.btn_color_hover}", 
       button_hover_color=f"{Config.btn_color_hover}", 
       values=[*Config.res_options],
       command=self.parent.set_dl_option_clbck)
-    #Closes menu
-    self.closeBtn = ctk.CTkButton(
-      self.settings_frame, 
-      fg_color=f"{Config.btn_color}", 
-      hover_color=f"{Config.btn_color_hover}", 
-      text="Close", 
-      command=self.destroy)
 
   def config_grid(self):
     self.grid_columnconfigure(0, weight=1)
@@ -77,8 +81,6 @@ class SettingsWindow(Window):
     self.dowLbl.grid(row=3, column=0, padx=(10, 0), pady=(0, 0), sticky="w")
     self.opt.grid(row=3, column=1, padx=(10, 10), pady=(10, 10), sticky="w")
 
-    self.closeBtn.grid(row=4, column=0, columnspan=3, padx=(10, 10), pady=(10, 10), sticky="s")
-
 class InfoWindow(Window):
   def __init__(self, parent, index:int):
     super().__init__(parent)
@@ -97,10 +99,6 @@ class InfoWindow(Window):
     self.info_window_frame = ctk.CTkScrollableFrame(
       self, 
       fg_color=f"{Config.primary_color}")
-    #Main-bottom info frame
-    self.info_bottom_frame = ctk.CTkFrame(
-      self, 
-      fg_color=f"{Config.primary_color}")
     #Attribute frame
     self.info_attr_frame = ctk.CTkFrame(
       self.info_window_frame, 
@@ -113,56 +111,57 @@ class InfoWindow(Window):
   def create_info_labels(self)->None:
     #video title
     self.titleLbl = ctk.CTkLabel(
-      self.info_attr_frame, 
+      self.info_attr_frame,
+      text_color=Config.primary_txt_color, 
       text=f"Title:",
       font=('ariel', 14, BOLD))
     self.titleContentLbl = ctk.CTkLabel(
       self.info_attr_frame, 
+      text_color=Config.primary_txt_color,
       text=f"{self.info["title"]}")
     #Video author
     self.authorLbl = ctk.CTkLabel(
         self.info_attr_frame, 
         text=f"Author:",
+        text_color=Config.primary_txt_color,
         font=('ariel', 14, BOLD))
     self.authorContentLbl = ctk.CTkLabel(
-        self.info_attr_frame, 
+        self.info_attr_frame,
+        text_color=Config.primary_txt_color, 
         text=f"{self.info["author"]}")
     #Video duriation
     self.duriationLbl = ctk.CTkLabel(
         self.info_attr_frame, 
         text=f"Duriation:",
+        text_color=Config.primary_txt_color,
         font=('ariel', 14, BOLD))
     self.duriationContentLbl = ctk.CTkLabel(
-        self.info_attr_frame, 
+        self.info_attr_frame,
+        text_color=Config.primary_txt_color, 
         text=f"{self.info["duriation"]}")
     #Video file size
     self.sizeLbl = ctk.CTkLabel(
         self.info_attr_frame, 
         text=f"Size:",
+        text_color=Config.primary_txt_color,
         font=('ariel', 14, BOLD))
     self.sizeContentLbl = ctk.CTkLabel(
-        self.info_attr_frame, 
+        self.info_attr_frame,
+        text_color=Config.primary_txt_color, 
         text=f"{self.info["size"]}")
     #Video Description
     self.descLbl = ctk.CTkLabel(
         self.info_desc_frame, 
         text=f"Description:",
+        text_color=Config.primary_txt_color,
         font=('ariel', 14, BOLD))
     #Description content
     self.descContentLbl = ctk.CTkLabel(
       self.info_desc_frame, 
       text=f"{self.info["desc"]}",
+      text_color=Config.primary_txt_color,
       wraplength=Config.max_paragraph_len,
       justify="left")
-      
-  def create_info_btns(self)->None:
-    #Closes menu
-    self.closeBtn = ctk.CTkButton(
-      self.info_bottom_frame, 
-      fg_color=f"{Config.btn_color}", 
-      hover_color=f"{Config.btn_color_hover}", 
-      text="Close", 
-      command=self.destroy)
   
   def config_info_grid(self)->None:
     self.grid_columnconfigure(0, weight=1)
@@ -179,7 +178,6 @@ class InfoWindow(Window):
 
   def append_info_grid(self)->None:
     self.info_window_frame.grid(row=0, column=0, sticky="nsew")
-    self.info_bottom_frame.grid(row=1, column=0, sticky="sew")
     self.info_attr_frame.grid(row=1, column=0, sticky="nsew")
     self.info_desc_frame.grid(row=2, column=0, sticky="nsew")
 
@@ -198,13 +196,10 @@ class InfoWindow(Window):
     self.descLbl.grid(row=0, column=0, padx=(10, 10), pady=(0, 0), sticky="w")
     self.descContentLbl.grid(row=1, column=0, padx=(10, 0), pady=(0, 10), sticky="w")
 
-    self.closeBtn.grid(row=0, column=0, padx=(10, 10), pady=(10, 10), sticky="nsew")
-
   def create_info_widgets(self)->None:
     self.fetch_info()
     self.create_info_frames()
     self.create_info_labels()
-    self.create_info_btns()
     self.config_info_grid()
     self.append_info_grid()
 

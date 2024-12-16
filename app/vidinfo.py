@@ -79,10 +79,12 @@ class VidInfo:
       image=self.vid_thumbnail)
     #bottom row of CT frame
     self.vid_duriation_lbl = ctk.CTkLabel(
-      self.vid_ct_opt_frame, 
+      self.vid_ct_opt_frame,
+      text_color=Config.primary_txt_color, 
       text=f"Duriation: {self.info["duriation"]}")
     self.vid_size_lbl = ctk.CTkLabel(
-      self.vid_ct_opt_frame, 
+      self.vid_ct_opt_frame,
+      text_color=Config.primary_txt_color, 
       text=f"Size: {self.info["size"]}")
   
   def create_vid_images(self)->None:
@@ -130,15 +132,23 @@ class VidInfo:
     self.vid_dl_option = ctk.CTkOptionMenu(
       self.vid_ct_opt_frame, 
       fg_color=f"{Config.secondary_color}", 
-      button_color=f"{Config.btn_color}", 
-      button_hover_color=f"{Config.btn_color_hover}", 
+      bg_color=f"{Config.secondary_color}",
+      dropdown_fg_color=f"{Config.btn_color}",
+      dropdown_text_color=f"{Config.primary_txt_color}",
+      dropdown_hover_color=f"{Config.primary_color}",
+      button_color=f"{Config.btn_color_hover}", 
+      button_hover_color=f"{Config.btn_color_hover}",
       values=[*Config.dl_options], 
       command=lambda cur_val: self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     self.vid_res_option = ctk.CTkOptionMenu(
       self.vid_ct_opt_frame, 
       fg_color=f"{Config.secondary_color}", 
-      button_color=f"{Config.btn_color}", 
-      button_hover_color=f"{Config.btn_color_hover}", 
+      bg_color=f"{Config.secondary_color}",
+      dropdown_fg_color=f"{Config.btn_color}",
+      dropdown_text_color=f"{Config.primary_txt_color}",
+      dropdown_hover_color=f"{Config.primary_color}",
+      button_color=f"{Config.btn_color_hover}", 
+      button_hover_color=f"{Config.btn_color_hover}",
       values=[*Config.res_options],
       command=lambda cur_val:self.parent.set_dl_single_clbck(txt=cur_val, i=self.index))
     #Set vid option values to the ones selected
@@ -184,12 +194,14 @@ class VidInfo:
     if len(self.info['title']) < 55:
       self.vid_title_lbl = ctk.CTkLabel(
         self.vid_ct_frame, 
-        text=f"{self.info["title"]}", 
+        text=f"{self.info["title"]}",
+        text_color=Config.primary_txt_color, 
         font=('ariel', 13, BOLD))
     else:
       self.vid_title_lbl = ctk.CTkLabel(
         self.vid_ct_frame, 
-        text=f"{self.info["title"][:55]}...", 
+        text=f"{self.info["title"][:55]}...",
+        text_color=Config.primary_txt_color, 
         font=('ariel', 13, BOLD))
 
   def update_vid_info(self, new_info: dict)->None:
@@ -220,7 +232,8 @@ class VidInfo:
       )
     self.vid_dl_progress_txt = ctk.CTkLabel(
         self.vid_ct_opt_frame, 
-        text="0%", 
+        text="0%",
+        text_color=Config.primary_txt_color, 
         fg_color="transparent", 
         font=("ariel", 15))
     self.vid_dl_progress_txt.grid(column=0, row=1, padx=(10, 10), sticky="w")

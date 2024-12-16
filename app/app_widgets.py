@@ -23,8 +23,9 @@ class AppWidgets:
     #labels
     self.download_progress_txt = ctk.CTkLabel(
       self.parent.frames.progress_frame, 
-      text="25%", 
-      fg_color="transparent", 
+      text="0%", 
+      text_color=Config.primary_txt_color,
+      fg_color=Config.primary_color, 
       font=("ariel", 20))
     self.error_txt = ctk.CTkLabel(
       self.parent.frames.progress_frame, 
@@ -35,7 +36,9 @@ class AppWidgets:
     #progress bar
     self.download_progress_bar = ctk.CTkProgressBar(
       self.parent.frames.progress_frame, 
-      progress_color=f"{Config.progress_color}", 
+      progress_color=f"{Config.progress_color}",
+      fg_color=Config.primary_color,
+      bg_color=Config.primary_color, 
       orientation="horizontal", 
       width=250)
     
@@ -46,7 +49,9 @@ class AppWidgets:
       self.parent.frames.top_frame, 
       border_width=0, 
       height=30, 
-      corner_radius=0, 
+      corner_radius=0,
+      fg_color=Config.btn_color,
+      text_color=Config.primary_txt_color, 
       placeholder_text="Video URL")
     #Add videos to que button
     self.addvideo_btn = ctk.CTkButton(
@@ -81,8 +86,12 @@ class AppWidgets:
     self.options = ctk.CTkOptionMenu(
       self.parent.frames.bottom_frame, 
       fg_color=f"{Config.secondary_color}", 
-      button_color=f"{Config.btn_color}", 
-      button_hover_color=f"{Config.btn_color_hover}", 
+      bg_color=f"{Config.secondary_color}",
+      dropdown_fg_color=f"{Config.btn_color}",
+      dropdown_text_color=f"{Config.primary_txt_color}",
+      dropdown_hover_color=f"{Config.primary_color}",
+      button_color=f"{Config.btn_color_hover}", 
+      button_hover_color=f"{Config.btn_color_hover}",
       values=[*Config.dl_options], 
       command=self.parent.set_dl_option_clbck)
     #Folder button for file path

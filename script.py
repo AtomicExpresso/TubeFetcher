@@ -13,7 +13,7 @@ Libaries used:
 
 """
 todo:
--Fix btn bug with vid info frame
+-Add themes
 """
 #Run application
 def run():

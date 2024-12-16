@@ -13,6 +13,7 @@ class Config:
 
   #-Text Colors
   success_txt_color:str = f"#4ea94b"
+  primary_txt_color:str = f"#ffffff"
 
   #-Window size
   primary_win_width:int = 500
