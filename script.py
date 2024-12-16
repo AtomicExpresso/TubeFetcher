@@ -2,13 +2,17 @@ import customtkinter
 from utils.cmd import AppCmd
 
 """
-Libaries used:
--Customtkinter
--Pillow
--Pyperclip
--Requests
--Json
--Pytube
+Libraries Used:
+- Third-Party Libraries:
+  - CustomTkinter
+  - Pillow
+  - Pyperclip
+  - Requests
+  - Pytube
+
+- Standard Python Modules:
+  - os
+  - json
 """
 
 """

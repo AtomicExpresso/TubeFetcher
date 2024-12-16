@@ -33,6 +33,7 @@ class Utils:
     data = {
       "res_type": Config.res_cur_option,
       "dl_type": Config.dl_cur_option,
+      "folder_path": Config.folder_path,
       "theme": Config.theme_cur_option
     }
 
@@ -52,6 +53,8 @@ class Utils:
         Config.res_cur_option = data['res_type']
       if data['theme'] in Config.theme_options:
         Config.theme_cur_option = data['theme']
+      if data['folder_path']:
+        Config.folder_path = data['folder_path']
     except:
       self.save_settings_data()
 
