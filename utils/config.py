@@ -35,7 +35,7 @@ class Config:
   #-Options
   dl_options:list[str] = ["Video + Audio", "Audio"]
   res_options:list[str] = ["1080p", "720p", "360p"]
-  theme_options:list[str] = ["Dark", "Midnight", "Blue"]
+  theme_options:list[str] = ["Dark", "Midnight", "Ocean Blue", "Coffee"]
 
   #-Current settings
   dl_cur_option:str = dl_options[0]

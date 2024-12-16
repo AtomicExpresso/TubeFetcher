@@ -11,10 +11,6 @@ Libaries used:
 -Pytube
 """
 
-"""
-todo:
--Add themes
-"""
 #Run application
 def run():
   customtkinter.set_appearance_mode("System")

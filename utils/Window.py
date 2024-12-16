@@ -125,7 +125,9 @@ class InfoWindow(Window):
     #Main info frame
     self.info_window_frame = ctk.CTkScrollableFrame(
       self, 
-      fg_color=f"{Config.theme["colors"]["primary"]}")
+      fg_color=f"{Config.theme["colors"]["primary"]}",
+      scrollbar_button_color=f"{Config.theme["colors"]["secondary"]}",
+      scrollbar_button_hover_color=f"{Config.theme["colors"]["secondary"]}")
     #Attribute frame
     self.info_attr_frame = ctk.CTkFrame(
       self.info_window_frame, 
