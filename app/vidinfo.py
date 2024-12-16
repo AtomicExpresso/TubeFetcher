@@ -108,12 +108,16 @@ class VidInfo:
         )
 
     def create_vid_images(self) -> None:
+        infoImgPath = Utils.get_resource_path("images/info.png")
+        linkImgPath = Utils.get_resource_path("images/link.png")
+        trashImgPath = Utils.get_resource_path("images/trash.png")
+        
         # info frame
-        infoImgSrc = Image.open("./images/info.png")
+        infoImgSrc = Image.open(infoImgPath)
         self.infoImg = ctk.CTkImage(light_image=infoImgSrc, size=(20, 20))
-        linkImgSrc = Image.open("./images/link.png")
+        linkImgSrc = Image.open(linkImgPath)
         self.linkImg = ctk.CTkImage(light_image=linkImgSrc, size=(20, 20))
-        trashImgSrc = Image.open("./images/trash.png")
+        trashImgSrc = Image.open(trashImgPath)
         self.trashImg = ctk.CTkImage(light_image=trashImgSrc, size=(20, 20))
 
     def create_vid_btn(self) -> None:

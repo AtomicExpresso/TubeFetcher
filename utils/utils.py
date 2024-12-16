@@ -1,10 +1,23 @@
 from utils.config import Config
 from tkinter import messagebox
 import json
+import os
+import sys
 
 
 # Used for general utility commands, such as calculating time, file size, etc.
 class Utils:
+    #Gets abs file path for files, so it will compile correctly
+    def get_resource_path(relative_path: str):
+        if getattr(sys, 'frozen', False):
+            # Running in a bundled app
+            app_path = sys._MEIPASS
+        else:
+            # Running in script mode
+            app_path = os.path.abspath(".")
+    
+        return os.path.join(app_path, relative_path)
+
     # Calculate total elapsed time for videos/audio
     def calculate_Time(time) -> str:
         try:
@@ -30,22 +43,25 @@ class Utils:
             raise ValueError("An error occured while calculating file size")
 
     # Save settings data
-    def save_settings_data() -> None:
+    @classmethod
+    def save_settings_data(self) -> None:
         data = {
             "res_type": Config.res_cur_option,
             "dl_type": Config.dl_cur_option,
             "folder_path": Config.folder_path,
             "theme": Config.theme_cur_option,
         }
-
-        with open("./settings/settings.json", "w") as file:
+        settings_path = self.get_resource_path("settings/settings.json")
+        with open(settings_path, "w") as file:
             json.dump(data, file)
 
     # Fetch save data
     @classmethod
     def load_settings_data(self) -> None:
         try:
-            with open("./settings/settings.json", "r") as file:
+            self.save_settings_data()
+            settings_path = self.get_resource_path("settings/settings.json")
+            with open(settings_path, "r") as file:
                 data = json.load(file)
 
             if data["dl_type"] in Config.dl_options:
@@ -74,7 +90,8 @@ class Utils:
     @classmethod
     def load_theme(self) -> None:
         try:
-            with open("./settings/themes.json", "r") as file:
+            themes_path = self.get_resource_path("settings/themes.json")
+            with open(themes_path, "r") as file:
                 themes = json.load(file)
 
             if Config.theme_cur_option in themes:

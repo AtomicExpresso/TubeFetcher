@@ -1,4 +1,6 @@
 import customtkinter as ctk
+import os
+import sys
 from app.vidinfo import VidInfo
 from app.frames import AppFrames
 from app.app_widgets import AppWidgets
@@ -24,7 +26,17 @@ class Application(ctk.CTk):
         super().__init__()
         self.geometry(f"{Config.primary_win_width}x{Config.primary_win_height}")
         self.title("TubeFetcher")
-        self.iconbitmap("./images/app-logo.ico")
+
+        #Simple fix fo pyinstaller to work, app icon path wasent importing
+        if getattr(sys, 'frozen', False):
+            # If the app is bundled (running as .exe)
+            app_path = sys._MEIPASS
+        else:
+            # If the app is not bundled (running as a script)
+            app_path = os.path.abspath(".")
+
+        icon_path = os.path.join(app_path, "images", "app-logo.ico")
+        self.wm_iconbitmap(icon_path)  # Use the correct icon path for Tkinter window
 
         # setup callback functions
         self.download_btn_clbck = (

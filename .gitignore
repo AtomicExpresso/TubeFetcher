@@ -5,6 +5,9 @@ __pycache__/
 #for settings file
 /settings/settings.json
 
+#Pyinstaller
+script.spec
+
 # C extensions
 *.so
 

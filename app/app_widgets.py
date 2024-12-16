@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from utils.config import Config
+from utils.utils import Utils
 from PIL import Image
 
 
@@ -9,10 +10,16 @@ class AppWidgets:
         self.parent = parent
 
     def create_images(self):
-        settingsImgSrc = Image.open("./images/settings.png")
-        folderImgSrc = Image.open("./images/folder.png")
-        trashImgSrc = Image.open("./images/trash.png")
-        plusImgSrc = Image.open("./images/plus.png")
+        #Ensures resource path is correct
+        settingsImgPath = Utils.get_resource_path("images/settings.png")
+        folderImgPath = Utils.get_resource_path("images/folder.png")
+        trashImgPath = Utils.get_resource_path("images/trash.png")
+        plusImgPath = Utils.get_resource_path("images/plus.png")
+
+        settingsImgSrc = Image.open(settingsImgPath)
+        folderImgSrc = Image.open(folderImgPath)
+        trashImgSrc = Image.open(trashImgPath)
+        plusImgSrc = Image.open(plusImgPath)
 
         self.settingsImg = ctk.CTkImage(light_image=settingsImgSrc, size=(20, 20))
         self.folderImg = ctk.CTkImage(light_image=folderImgSrc, size=(20, 20))
