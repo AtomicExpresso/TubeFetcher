@@ -1,4 +1,4 @@
-# TubeFetcher <br> ![version](https://img.shields.io/github/v/release/atomicexpresso/TubeFetcher?label=latest-release) ![downloads](https://img.shields.io/github/downloads/atomicexpresso/TubeFetcher/total) ![License](https://img.shields.io/github/license/atomicexpresso/TubeFetcher)
+# TubeFetcher <br> ![version](https://img.shields.io/github/v/release/AtomicExpresso/TubeFetcher) ![downloads](https://img.shields.io/github/downloads/AtomicExpresso/TubeFetcher/total) ![License](https://img.shields.io/github/license/AtomicExpresso/TubeFetcher)
 
 TubeFetcher is a customizable Python-based GUI application that makes it easy to archive and download YouTube videos or audio.
 
