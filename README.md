@@ -22,6 +22,7 @@ TubeFetcher is a customizable Python-based GUI application that makes it easy to
 4. Wait for the videos to finish downloading. All files will appear at the specified file path.
 
 ## Download
+Only tested on Windows 11, however the application may work for different operating systems. 
 You can download the latest version of the application from the [Releases page](https://github.com/atomicexpresso/TubeFetcher/releases).
 
 Note: The app may take a couple of minutes to load the first time you run it.
@@ -49,7 +50,7 @@ If you'd like to download and compile the application yourself, follow these ste
 - Pyperclip
 - Requests
 - Pytube
-- PyInstaller
+- Nuitka
 
 ## License
 This repository is intended for educational and archival purposes only. TubeFetcher and its contributors are not responsible for any misuse of this software.
