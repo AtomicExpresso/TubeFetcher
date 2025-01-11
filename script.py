@@ -9,6 +9,7 @@ Libraries Used:
   - Pyperclip
   - Requests
   - Pytube
+  - Nuitka (for bundeling files and compiling to C)
 
 - Standard Python Modules:
   - os
@@ -24,6 +25,5 @@ def run():
     program = AppCmd()
 
     program.run()
-
 
 run()

@@ -5,8 +5,13 @@ __pycache__/
 #for settings file
 /settings/settings.json
 
-#Pyinstaller
+#Pyinstaller and Nikita
 script.spec
+/script.dist
+/script.build
+/script.onefile-build
+script.exe
+TubeFetcher.exe
 
 # C extensions
 *.so
