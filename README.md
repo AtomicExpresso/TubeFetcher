@@ -1,4 +1,4 @@
-# TubeFetcher <br> ![version](https://img.shields.io/github/v/release/AtomicExpresso/TubeFetcher) ![downloads](https://img.shields.io/github/downloads/AtomicExpresso/TubeFetcher/total) ![License](https://img.shields.io/github/license/AtomicExpresso/TubeFetcher)
+# TubeFetcher <br> ![version](https://img.shields.io/github/v/release/CinnamonExpresso/TubeFetcher) ![downloads](https://img.shields.io/github/downloads/cinnamonExpresso/TubeFetcher/total) ![License](https://img.shields.io/github/license/CinnamonExpresso/TubeFetcher)
 
 TubeFetcher is a customizable Python-based GUI application that makes it easy to archive and download YouTube videos or audio.
 
@@ -23,7 +23,7 @@ TubeFetcher is a customizable Python-based GUI application that makes it easy to
 
 ## Download
 Only tested on Windows 11, however the application may work for different operating systems. 
-You can download the latest version of the application from the [Releases page](https://github.com/atomicexpresso/TubeFetcher/releases).
+You can download the latest version of the application from the [Releases page](https://github.com/cinnamonexpresso/TubeFetcher/releases).
 
 Note: The app may take a couple of minutes to load the first time you run it.
 
@@ -32,7 +32,7 @@ If you'd like to download and compile the application yourself, follow these ste
 
 1. download the repo
 ```bash
-  git clone https://github.com/AtomicExpresso/TubeFetcher.git
+  git clone https://github.com/cinnamonExpresso/TubeFetcher.git
   cd script
 ```
 2. Install the required libraries:
@@ -56,4 +56,4 @@ If you'd like to download and compile the application yourself, follow these ste
 This repository is intended for educational and archival purposes only. TubeFetcher and its contributors are not responsible for any misuse of this software.
 TubeFetcher does not condone practices that violate local laws, such as (but not limited to) the DMCA. Users are expected to act responsibly and ensure compliance with applicable laws.
 
-This project is licensed under the MIT License. See the full [license](https://github.com/AtomicExpresso/TubeFetcher?tab=MIT-1-ov-file) for details.
+This project is licensed under the MIT License. See the full [license](https://github.com/cinnamonExpresso/TubeFetcher?tab=MIT-1-ov-file) for details.
